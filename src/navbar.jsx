@@ -9,7 +9,7 @@ function Navbar() {
           </span>
         </a>
 
-        <ul className="flex space-x-8 text-white">
+        <ul className="flex gap-4 text-white text-sm">
           <li>
             <Link to="/" className="hover:text-green-400">
               Inicio
