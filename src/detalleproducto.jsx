@@ -9,7 +9,7 @@ function ProductoDetalle({ cart, toggleCarrito }) {
   const enCarrito = cart.some(item => item.id === Number(id));
 
   useEffect(() => {
-    fetch(`http://localhost:3000/productos/${id}`)
+    fetch(`https://footballhub-production.up.railway.app/productos/${id}`)
       .then(res => res.json())
       .then(data => setProducto(data));
   }, [id]);

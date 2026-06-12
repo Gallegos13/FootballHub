@@ -13,7 +13,7 @@ function App() {
   const [suscrito, setSuscrito] = useState(false)
 
   useEffect(() => {
-    fetch('http://localhost:3000/productos')
+    fetch('https://footballhub-production.up.railway.app/productos')
       .then(res => res.json())
       .then(data => setProductos(data))
       .catch(err => console.error('Error al obtener productos:', err))
