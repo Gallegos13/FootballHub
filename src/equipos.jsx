@@ -1,37 +1,37 @@
-const Equipos = [
+const productos = [
   {
     id: 1,
-    name: "Club América",
-    country: "México",
-    posicion: 1,
+    name: "Balón de Fútbol Pro",
+    category: "Balones",
+    price: 89.99,
     imagen:
-      "https://logodownload.org/wp-content/uploads/2018/10/america-mexico-logo-1.png"
+      "https://www.pngall.com/wp-content/uploads/5/Football-Soccer-Ball-PNG-Free-Download.png"
   },
   {
     id: 2,
-    name: "Real Madrid",
-    country: "España",
-    posicion: 3,
+    name: "Camiseta Deportiva Elite",
+    category: "Ropa",
+    price: 59.99,
     imagen:
-      "https://upload.wikimedia.org/wikipedia/en/thumb/5/56/Real_Madrid_CF.svg/960px-Real_Madrid_CF.svg.png"
+      "https://www.pngall.com/wp-content/uploads/5/Sports-Jersey-PNG-Image-HD.png"
   },
   {
     id: 3,
-    name: "FC Barcelona",
-    country: "España",
-    posicion: 1,
+    name: "Zapatillas Running Air",
+    category: "Calzado",
+    price: 129.99,
     imagen:
-      "https://upload.wikimedia.org/wikipedia/sco/thumb/4/47/FC_Barcelona_%28crest%29.svg/3840px-FC_Barcelona_%28crest%29.svg.png"
+      "https://www.pngall.com/wp-content/uploads/5/Running-Shoes-PNG-Clipart.png"
   },
   {
     id: 4,
-    name: "Arsenal",
-    country: "Inglaterra",
-    posicion: 1,
+    name: "Mochila Deportiva",
+    category: "Accesorios",
+    price: 39.99,
     imagen:
-      "https://upload.wikimedia.org/wikipedia/hif/8/82/Arsenal_FC.png"
+      "https://www.pngall.com/wp-content/uploads/5/Backpack-PNG-Free-Download.png"
   },
   
 ];
 
-export default Equipos;
+export default productos;

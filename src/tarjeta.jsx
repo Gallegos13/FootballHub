@@ -1,47 +1,51 @@
-
-function Tarjeta({ team, favoritos, toggleFavorito }) {
-    const esFavorito = favoritos.some(
-    fav => fav.id === team.id
-  )
+import { Link } from "react-router-dom";
+function Tarjeta({ product, cart, toggleCarrito}) {
+  const enCarrito = cart.some(item => item.id === product.id)
   return (
     <div className="relative bg-slate-800 w-full p-6 rounded-xl shadow-lg border border-slate-700">
-         <button
-        onClick={() => toggleFavorito(team)}
-        className={`absolute top-2 right-2 text-2xl  ${
-          esFavorito
-            ? "text-yellow-400"
-            : "text-gray-500"
+      <button
+        onClick={() => toggleCarrito(product)}
+        className={`absolute top-2 right-2 text-2xl ${
+          enCarrito ? "text-yellow-400" : "text-gray-500"
         }`}
       >
-        ★
+        
       </button>
       <div className="flex flex-col items-center">
         <img
-          className="w-24 h-24 mb-6  object-contain"
-          src={team.imagen}
-          
+          className="w-24 h-24 mb-6 object-contain"
+          src={product.imagen}
+          alt={product.nombre}
         />
 
         <h5 className="mb-1 text-xl font-semibold text-white">
-          {team.name}
+          {product.nombre}
         </h5>
 
         <span className="text-slate-400">
-          {team.country}
+          {product.categoria}
         </span>
 
         <span className="text-green-400 mt-2">
-          Posicion Actual: {team.posicion}
+          ${Number(product.precio).toFixed(2)}
         </span>
 
         <div className="flex mt-5 gap-3">
-          <button className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg">
-            Informacion
+          <button
+            onClick={() => toggleCarrito(product)}
+            className={`px-4 py-2 rounded-lg text-white ${
+              enCarrito
+                ? "bg-red-600 hover:bg-red-700"
+                : "bg-green-600 hover:bg-green-700"
+            }`}
+          >
+            {enCarrito ? "Quitar" : "Agregar"}
           </button>
 
-          <button className="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-lg">
-            Estadísticas
-          </button>
+          <Link to={`/producto/${product.id}`}
+          className="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-lg">
+            Detalles
+          </Link>
         </div>
       </div>
     </div>

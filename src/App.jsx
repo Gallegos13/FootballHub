@@ -1,125 +1,127 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
+import { useState, useEffect } from 'react'
 import './App.css'
 import Navbar from './navbar'
 import Tarjeta from './tarjeta'
-import Equipos from './equipos';
 import { Routes, Route } from 'react-router-dom'
-import Favoritos from './equiposfavoritos'
- 
+import Carrito from './equiposfavoritos'
+import ProductoDetalle from './detalleproducto'
+
 function App() {
-  const [favoritos, setFavoritos] = useState([])
+  const [productos, setProductos] = useState([])
+  const [cart, setCart] = useState([])
   const [correo, setCorreo] = useState("")
-const [suscrito, setSuscrito] = useState(false)
-  const toggleFavorito = (equipo) => {
+  const [suscrito, setSuscrito] = useState(false)
 
-  const existe = favoritos.some(
-    favorito => favorito.id === equipo.id
-  )
+  useEffect(() => {
+    fetch('http://localhost:3000/productos')
+      .then(res => res.json())
+      .then(data => setProductos(data))
+      .catch(err => console.error('Error al obtener productos:', err))
+  }, [])
 
-  if (existe) {
-    setFavoritos(
-      favoritos.filter(
-        favorito => favorito.id !== equipo.id
-      )
-    )
-  } else {
-    setFavoritos([...favoritos, equipo])
+  const toggleCarrito = (product) => {
+    const existe = cart.some(item => item.id === product.id)
+    if (existe) {
+      setCart(cart.filter(item => item.id !== product.id))
+    } else {
+      setCart([...cart, product])
+    }
   }
 
-}
-const suscribirse = () => {
-
-  if (correo.trim() === "") {
-    return
+  const vaciarCarrito = () => {
+    setCart([])
   }
 
-  setSuscrito(true)
+  const suscribirse = () => {
+    if (correo.trim() === "") {
+      return
+    }
+    setSuscrito(true)
+  }
 
-}
   return (
     <Routes>
       <Route
-      path='/'
+        path='/'
+        element={
+          <>
+            <Navbar cartCount={cart.length} />
+            <div className="min-h-screen bg-slate-900 text-white flex flex-col">
+              <main className="max-w-6xl mx-auto p-6 flex-1 pt-20">
+                <h2 className="text-3xl font-bold mb-6">
+                  Productos destacados
+                </h2>
+
+                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                  {productos.map((product) => (
+                    <Tarjeta
+                      key={product.id}
+                      product={product}
+                      cart={cart}
+                      toggleCarrito={toggleCarrito}
+                    />
+                  ))}
+                </div>
+              </main>
+
+              <footer className="bg-slate-800 border-t border-slate-700 mt-10 py-4">
+                <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-3">
+                  <div>
+                    <h3 className="font-bold text-lg">
+                      Promociones Exclusivas
+                    </h3>
+                    <p className="text-slate-400 text-sm">
+                      Recibe ofertas y novedades semanales.
+                    </p>
+                  </div>
+
+                  {!suscrito ? (
+                    <div className="flex gap-2 w-full md:w-auto">
+                      <input
+                        type="email"
+                        value={correo}
+                        onChange={(e) => setCorreo(e.target.value)}
+                        placeholder="Tu correo"
+                        className="px-3 py-2 rounded-lg text-white"
+                      />
+                      <button
+                        onClick={suscribirse}
+                        className="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg"
+                      >
+                        Suscribirme
+                      </button>
+                    </div>
+                  ) : (
+                    <span className="text-green-400 font-semibold">
+                      Suscrito
+                    </span>
+                  )}
+                </div>
+              </footer>
+            </div>
+          </>
+        }
+      />
+      <Route
+        path="/carrito"
+        element={
+          <>
+            <Navbar cartCount={cart.length} />
+            <Carrito cart={cart} vaciarCarrito={vaciarCarrito} toggleCarrito={toggleCarrito} />
+          </>
+          
+        }
+      />
+      <Route
+      path="/producto/:id"
       element={
         <>
-      
-    
-      <Navbar />
-<div className="min-h-screen bg-slate-900 text-white flex flex-col">
-      
-
-      <main className="max-w-6xl mx-auto p-6 flex-1">
-        <h2 className="text-3xl font-bold mb-6">
-          Equipos destacados
-        </h2>
-
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 ">
-          {Equipos.map((team) => (
-            <Tarjeta
-              key={team.id}
-              team={team}
-              favoritos={favoritos}
-              toggleFavorito={toggleFavorito}
-            />
-          ))}
-        </div>
-      </main>
-      <footer className="bg-slate-800 border-t border-slate-700 mt-10 py-4">
-
-  <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-3">
-
-    <div>
-      <h3 className="font-bold text-lg">
-        Newsletter Football Hub
-      </h3>
-
-      <p className="text-slate-400 text-sm">
-        Recibe noticias y estadísticas semanales.
-      </p>
-    </div>
-
-    {!suscrito ? (
-      <div className="flex gap-2 w-full md:w-auto">
-        <input
-          type="email"
-          value={correo}
-          onChange={(e) => setCorreo(e.target.value)}
-          placeholder="Tu correo"
-          className="px-3 py-2 rounded-lg text-white"
-        />
-
-        <button
-          onClick={suscribirse}
-          className="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg"
-        >
-          Suscribirme
-        </button>
-      </div>
-    ) : (
-      <span className="text-green-400 font-semibold">
-        Suscrito
-      </span>
-    )}
-
-  </div>
-
-</footer>
-</div>
-    </>
-      }
-/>
-<Route
-path="/favoritos"
-element={
-  <Favoritos favoritos={favoritos}/>
-
+          <Navbar cartCount={cart.length} />
+          <ProductoDetalle cart={cart} toggleCarrito={toggleCarrito} />
+        </>
+      } />
+    </Routes>
+  )
 }
-/>
-</Routes>
-)
-}
+
 export default App;
- 
