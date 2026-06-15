@@ -21,7 +21,10 @@ function ProductoDetalle({ toggleCarrito }) {
   }
 
   const handleToggleCarrito = () => {
-    toggleCarrito(producto);
+    toggleCarrito({
+      ...producto,
+      tallaSeleccionada: talla
+    });
   };
 
   return (

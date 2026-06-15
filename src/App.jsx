@@ -24,7 +24,7 @@ function App() {
       ...cart,
       {
         ...product,
-        tallaSeleccionada: ""
+        tallaSeleccionada: product.tallaSeleccionada || ""
       }
     ])
   }
