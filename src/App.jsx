@@ -25,8 +25,8 @@ function App() {
     
   }
 
-  const quitarDelCarrito = (id) => {
-    setCart(cart.filter(item => item.id !== id))
+  const quitarDelCarrito = (index) => {
+    setCart(cart.filter((_, i) => i !== index))
   }
 
   const vaciarCarrito = () => {

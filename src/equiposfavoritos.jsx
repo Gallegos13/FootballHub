@@ -23,7 +23,7 @@ function Carrito({ cart, vaciarCarrito, quitarDelCarrito }) {
         ) : (
           <>
             <div className="space-y-4">
-              {cart.map((item) => (
+              {cart.map((item, index) => (
                 <div
                   key={item.id}
                   className="flex items-center gap-4 bg-slate-800 p-4 rounded-lg border border-slate-700"
@@ -41,7 +41,7 @@ function Carrito({ cart, vaciarCarrito, quitarDelCarrito }) {
                     ${Number(item.precio).toFixed(2)}
                   </span>
                   <button
-                    onClick={() => quitarDelCarrito(item.id)}
+                    onClick={() => quitarDelCarrito(index)}
                     className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-lg text-sm"
                   >
                     Quitar
