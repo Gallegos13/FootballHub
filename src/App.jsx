@@ -20,13 +20,27 @@ function App() {
   }, [])
 
   const toggleCarrito = (product) => {
-    
-      setCart([...cart, product])
-    
+    setCart([
+      ...cart,
+      {
+        ...product,
+        tallaSeleccionada: ""
+      }
+    ])
   }
 
   const quitarDelCarrito = (index) => {
     setCart(cart.filter((_, i) => i !== index))
+  }
+
+  const cambiarTalla = (index, talla) => {
+    setCart(
+      cart.map((item, i) =>
+        i === index
+          ? { ...item, tallaSeleccionada: talla }
+          : item
+      )
+    )
   }
 
   const vaciarCarrito = () => {
@@ -108,7 +122,7 @@ function App() {
         element={
           <>
             <Navbar cartCount={cart.length} />
-            <Carrito cart={cart} vaciarCarrito={vaciarCarrito} quitarDelCarrito={quitarDelCarrito} />
+            <Carrito cart={cart} vaciarCarrito={vaciarCarrito} quitarDelCarrito={quitarDelCarrito} cambiarTalla={cambiarTalla} />
           </>
           
         }

@@ -1,4 +1,4 @@
-function Carrito({ cart, vaciarCarrito, quitarDelCarrito }) {
+function Carrito({ cart, vaciarCarrito, quitarDelCarrito, cambiarTalla }) {
   const total = cart.reduce((sum, item) => sum + Number(item.precio), 0)
 
   return (
@@ -37,6 +37,18 @@ function Carrito({ cart, vaciarCarrito, quitarDelCarrito }) {
                     <h3 className="text-lg font-semibold">{item.nombre}</h3>
                     <p className="text-slate-400 text-sm">{item.categoria}</p>
                   </div>
+                  <select
+                    value={item.tallaSeleccionada}
+                    onChange={(e) => cambiarTalla(index, e.target.value)}
+                    className="bg-slate-700 text-white p-2 rounded"
+                  >
+                    <option value="">Selecciona talla</option>
+                    {item.tallas.split(',').map((talla) => (
+                      <option key={talla} value={talla}>
+                        {talla}
+                      </option>
+                    ))}
+                  </select>
                   <span className="text-green-400 font-bold text-lg">
                     ${Number(item.precio).toFixed(2)}
                   </span>

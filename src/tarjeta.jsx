@@ -5,9 +5,7 @@ function Tarjeta({ product, cart, toggleCarrito}) {
     <div className="relative bg-slate-800 w-full p-6 rounded-xl shadow-lg border border-slate-700">
       <button
         onClick={() => toggleCarrito(product)}
-        className={`absolute top-2 right-2 text-2xl ${
-          enCarrito ? "text-yellow-400" : "text-gray-500"
-        }`}
+        className={`absolute top-2 right-2 text-2xl `}
       >
         
       </button>
@@ -33,13 +31,9 @@ function Tarjeta({ product, cart, toggleCarrito}) {
         <div className="flex mt-5 gap-3">
           <button
             onClick={() => toggleCarrito(product)}
-            className={`px-4 py-2 rounded-lg text-white ${
-              enCarrito
-                ? "bg-red-600 hover:bg-red-700"
-                : "bg-green-600 hover:bg-green-700"
-            }`}
+            className={`px-4 py-2 rounded-lg text-white `}
           >
-            {enCarrito ? "Quitar" : "Agregar"}
+            
           </button>
 
           <Link to={`/producto/${product.id}`}
