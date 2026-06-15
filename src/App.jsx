@@ -72,7 +72,6 @@ function App() {
                     <Tarjeta
                       key={product.id}
                       product={product}
-                      cart={cart}
                       toggleCarrito={toggleCarrito}
                     />
                   ))}
@@ -132,7 +131,7 @@ function App() {
       element={
         <>
           <Navbar cartCount={cart.length} />
-          <ProductoDetalle cart={cart} toggleCarrito={toggleCarrito} />
+          <ProductoDetalle toggleCarrito={toggleCarrito} />
         </>
       } />
     </Routes>

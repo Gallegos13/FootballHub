@@ -1,12 +1,10 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 
-function ProductoDetalle({ cart, toggleCarrito }) {
+function ProductoDetalle({ toggleCarrito }) {
   const { id } = useParams();
   const [producto, setProducto] = useState(null);
   const [talla, setTalla] = useState("");
-
-  const enCarrito = cart.some(item => item.id === Number(id));
 
   useEffect(() => {
     fetch(`https://footballhub-production.up.railway.app/productos/${id}`)
@@ -80,13 +78,9 @@ function ProductoDetalle({ cart, toggleCarrito }) {
 
             <button
               onClick={handleToggleCarrito}
-              className={`mt-6 px-6 py-3 rounded-lg ${
-                enCarrito
-                  ? "bg-red-600 hover:bg-red-700"
-                  : "bg-green-600 hover:bg-green-700"
-              }`}
+              className="mt-6 px-6 py-3 rounded-lg bg-green-600 hover:bg-green-700 text-white"
             >
-              {enCarrito ? "Quitar del carrito" : "Agregar al carrito"}
+              Agregar
             </button>
           </div>
         </div>
