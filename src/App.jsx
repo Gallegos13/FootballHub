@@ -20,12 +20,9 @@ function App() {
   }, [])
 
   const toggleCarrito = (product) => {
-    const existe = cart.some(item => item.id === product.id)
-    if (existe) {
-      setCart(cart.filter(item => item.id !== product.id))
-    } else {
+    
       setCart([...cart, product])
-    }
+    
   }
 
   const vaciarCarrito = () => {
