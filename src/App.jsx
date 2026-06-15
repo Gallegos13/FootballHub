@@ -25,6 +25,10 @@ function App() {
     
   }
 
+  const quitarDelCarrito = (id) => {
+    setCart(cart.filter(item => item.id !== id))
+  }
+
   const vaciarCarrito = () => {
     setCart([])
   }
@@ -104,7 +108,7 @@ function App() {
         element={
           <>
             <Navbar cartCount={cart.length} />
-            <Carrito cart={cart} vaciarCarrito={vaciarCarrito} toggleCarrito={toggleCarrito} />
+            <Carrito cart={cart} vaciarCarrito={vaciarCarrito} quitarDelCarrito={quitarDelCarrito} />
           </>
           
         }

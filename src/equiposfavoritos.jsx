@@ -1,4 +1,4 @@
-function Carrito({ cart, vaciarCarrito, toggleCarrito }) {
+function Carrito({ cart, vaciarCarrito, quitarDelCarrito }) {
   const total = cart.reduce((sum, item) => sum + Number(item.precio), 0)
 
   return (
@@ -41,7 +41,7 @@ function Carrito({ cart, vaciarCarrito, toggleCarrito }) {
                     ${Number(item.precio).toFixed(2)}
                   </span>
                   <button
-                    onClick={() => toggleCarrito(item)}
+                    onClick={() => quitarDelCarrito(item.id)}
                     className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-lg text-sm"
                   >
                     Quitar
