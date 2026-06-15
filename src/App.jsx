@@ -3,7 +3,7 @@ import './App.css'
 import Navbar from './navbar'
 import Tarjeta from './tarjeta'
 import { Routes, Route } from 'react-router-dom'
-import Carrito from './equiposfavoritos'
+import Carrito from './carrito'
 import ProductoDetalle from './detalleproducto'
 
 function App() {
