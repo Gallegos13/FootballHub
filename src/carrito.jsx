@@ -25,7 +25,7 @@ function Carrito({ cart, vaciarCarrito, quitarDelCarrito, cambiarTalla }) {
             <div className="space-y-4">
               {cart.map((item, index) => (
                 <div
-                  key={item.id}
+                  key={`${item.id}-${index}`}
                   className="flex items-center gap-4 bg-slate-800 p-4 rounded-lg border border-slate-700"
                 >
                   <img

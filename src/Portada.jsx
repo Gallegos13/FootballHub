@@ -46,7 +46,7 @@ export default function Portada() {
           className="flex justify-center"
         >
           <img
-            src="././public/mexicobanner.png"
+            src="/mexicobanner.png"
             alt="SportHub"
             className="w-full max-w-lg drop-shadow-2xl"
           />

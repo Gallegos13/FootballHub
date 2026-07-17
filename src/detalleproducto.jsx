@@ -5,12 +5,31 @@ function ProductoDetalle({ toggleCarrito }) {
   const { id } = useParams();
   const [producto, setProducto] = useState(null);
   const [talla, setTalla] = useState("");
+  const [errorDetalle, setErrorDetalle] = useState(null);
 
   useEffect(() => {
-    fetch(`https://footballhub-production.up.railway.app/productos/${id}`)
-      .then(res => res.json())
-      .then(data => setProducto(data));
+    fetch(`https://footballhub-vpka.onrender.com/productos/${id}`)
+      .then(res => {
+        if (!res.ok) throw new Error('Producto no encontrado')
+        return res.json()
+      })
+      .then(data => setProducto(data))
+      .catch(err => {
+        console.error('Error al obtener producto:', err)
+        setErrorDetalle('No se pudo cargar el producto. Intenta de nuevo más tarde.')
+      });
   }, [id]);
+
+  if (errorDetalle) {
+    return (
+      <div className="min-h-screen bg-slate-900 text-white p-6 pt-20">
+        <div className="max-w-6xl mx-auto">
+          <p className="text-red-400 text-lg">{errorDetalle}</p>
+          <a href="/" className="text-blue-400 hover:underline mt-4 inline-block">Volver al catálogo</a>
+        </div>
+      </div>
+    );
+  }
 
   if (!producto) {
     return (
@@ -53,6 +72,14 @@ function ProductoDetalle({ toggleCarrito }) {
 
             <p className="mt-4">
               Marca: {producto.marca}
+            </p>
+
+            <p className="mt-2 text-slate-300">
+              Categoría: {producto.categoria}
+            </p>
+
+            <p className="mt-2 text-slate-300">
+              Stock disponible: {producto.stock > 0 ? `${producto.stock} unidades` : 'Agotado'}
             </p>
 
             <div className="mt-6">

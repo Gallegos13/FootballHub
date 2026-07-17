@@ -1,8 +1,11 @@
 import { Link } from "react-router-dom";
-import { ShoppingCart, House, Tag, Trophy } from "lucide-react";
+import { ShoppingCart, House, Tag, Menu, X } from "lucide-react";
 import { motion } from "framer-motion";
+import { useState } from "react";
 
 function Navbar({ cartCount }) {
+  const [menuAbierto, setMenuAbierto] = useState(false);
+
   return (
     <motion.nav
       initial={{ y: -70, opacity: 0 }}
@@ -15,7 +18,6 @@ function Navbar({ cartCount }) {
           to="/"
           className="flex items-center gap-2 text-white text-2xl font-bold"
         >
-          
           <span>SportHub</span>
         </Link>
 
@@ -57,7 +59,52 @@ function Navbar({ cartCount }) {
         <button className="rounded-xl bg-blue-600 px-5 py-2 font-semibold text-white transition hover:bg-blue-500">
           Categorías
         </button>
+
+        <button
+          className="md:hidden text-slate-300 hover:text-white transition"
+          onClick={() => setMenuAbierto(!menuAbierto)}
+        >
+          {menuAbierto ? <X size={24} /> : <Menu size={24} />}
+        </button>
       </div>
+
+      {menuAbierto && (
+        <div className="md:hidden border-t border-slate-700/50 bg-slate-950/95 backdrop-blur-lg">
+          <ul className="flex flex-col items-center gap-4 py-4 text-slate-300 font-medium">
+            <li>
+              <Link
+                to="/"
+                className="flex items-center gap-2 hover:text-blue-400 transition"
+                onClick={() => setMenuAbierto(false)}
+              >
+                <House size={18} />
+                Inicio
+              </Link>
+            </li>
+            <li className="relative">
+              <Link
+                to="/carrito"
+                className="flex items-center gap-2 hover:text-blue-400 transition"
+                onClick={() => setMenuAbierto(false)}
+              >
+                <ShoppingCart size={18} />
+                Carrito
+                {cartCount > 0 && (
+                  <span className="flex h-5 w-5 items-center justify-center rounded-full bg-blue-600 text-xs text-white">
+                    {cartCount}
+                  </span>
+                )}
+              </Link>
+            </li>
+            <li>
+              <button className="flex items-center gap-2 hover:text-blue-400 transition">
+                <Tag size={18} />
+                Ofertas
+              </button>
+            </li>
+          </ul>
+        </div>
+      )}
     </motion.nav>
   );
 }

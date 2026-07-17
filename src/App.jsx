@@ -12,14 +12,29 @@ function App() {
   const [cart, setCart] = useState([])
   const [correo, setCorreo] = useState("")
   const [suscrito, setSuscrito] = useState(false)
+  const [cargando, setCargando] = useState(true)
+  const [errorCatalogo, setErrorCatalogo] = useState(null)
+  const [busqueda, setBusqueda] = useState("")
+const [categoria, setCategoria] = useState("")
+const [deporte, setDeporte] = useState("")
+const [marca, setMarca] = useState("")
 
   useEffect(() => {
-    fetch('https://footballhub-production.up.railway.app/productos')
-      .then(res => res.json())
+    fetch('https://footballhub-vpka.onrender.com/productos')
+      .then(res => {
+        if (!res.ok) throw new Error('Error al cargar productos')
+        return res.json()
+      })
       .then(data => setProductos(data))
-      .catch(err => console.error('Error al obtener productos:', err))
+      .catch(err => {
+        console.error('Error al obtener productos:', err)
+        setErrorCatalogo('No se pudieron cargar los productos. Intenta de nuevo más tarde.')
+      })
+      .finally(() => setCargando(false))
   }, [])
-
+const categorias = [...new Set(productos.map(p => p.categoria).filter(Boolean))]
+const deportes = [...new Set(productos.map(p => p.deporte).filter(Boolean))]
+const marcas = [...new Set(productos.map(p => p.marca).filter(Boolean))]
   const toggleCarrito = (product) => {
     setCart([
       ...cart,
@@ -55,7 +70,14 @@ function App() {
     const newLocal = true
     setSuscrito(newLocal)
   }
-
+const productosFiltrados = productos.filter(producto => {
+  return (
+    producto.nombre.toLowerCase().includes(busqueda.toLowerCase()) &&
+    (categoria === "" || producto.categoria === categoria) &&
+    (deporte === "" || producto.deporte === deporte) &&
+    (marca === "" || producto.marca === marca)
+  )
+})
   return (
     <Routes>
       <Route
@@ -64,20 +86,106 @@ function App() {
           <>
             <Navbar cartCount={cart.length} />
             <div className="min-h-screen bg-slate-900 text-white flex flex-col">
-              <main className="max-w-7xl mx-auto px-6 py-10 flex-1 pt-24">
+              <main className="relative overflow-hidden pt-24">
+
+    <div className="absolute -top-40 -left-40 w-[500px] h-[500px] rounded-full bg-green-500/10 blur-3xl"></div>
+
+    <div className="absolute top-96 right-0 w-[500px] h-[500px] rounded-full bg-blue-500/10 blur-3xl"></div>
+
+    <div className="relative max-w-7xl mx-auto px-6"></div>
                 <Portada />
                 <h2 className="text-4xl font-extrabold mb-8">
                   Productos destacados
                 </h2>
+<div className="mb-10 space-y-5">
 
-                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                  {productos.map((product) => (
-                    <Tarjeta
-                      key={product.id}
-                      product={product}
-                      toggleCarrito={toggleCarrito}
-                    />
-                  ))}
+  <div className="relative mb-4">
+    <input
+      type="text"
+      placeholder="🔍 Buscar productos..."
+      value={busqueda}
+      onChange={(e)=>setBusqueda(e.target.value)}
+      className="w-full rounded-xl bg-slate-900 border border-slate-700 px-5 py-3 text-white placeholder-slate-400 focus:border-green-500 focus:ring-2 focus:ring-green-500 outline-none transition"
+    />
+  </div>
+
+  <div className="flex flex-wrap justify-end items-center gap-3">
+
+    <select
+      value={categoria}
+      onChange={(e)=>setCategoria(e.target.value)}
+      className="rounded-xl bg-slate-900 border border-slate-700 px-4 py-3 text-white focus:border-green-500 focus:ring-2 focus:ring-green-500 outline-none"
+    >
+      <option value="">📂 Categoría</option>
+      {categorias.map(cat=>(
+        <option key={cat}>{cat}</option>
+      ))}
+    </select>
+
+    <select
+      value={deporte}
+      onChange={(e)=>setDeporte(e.target.value)}
+      className="rounded-xl bg-slate-900 border border-slate-700 px-4 py-3 text-white focus:border-green-500 focus:ring-2 focus:ring-green-500 outline-none"
+    >
+      <option value="">⚽ Deporte</option>
+      {deportes.map(dep=>(
+        <option key={dep}>{dep}</option>
+      ))}
+    </select>
+
+    <select
+      value={marca}
+      onChange={(e)=>setMarca(e.target.value)}
+      className="rounded-xl bg-slate-900 border border-slate-700 px-4 py-3 text-white focus:border-green-500 focus:ring-2 focus:ring-green-500 outline-none"
+    >
+      <option value="">🏷️ Marca</option>
+      {marcas.map(mar=>(
+        <option key={mar}>{mar}</option>
+      ))}
+    </select>
+
+    <button
+      onClick={()=>{
+        console.log("Limpiar");
+        setBusqueda("")
+        setCategoria("")
+        setDeporte("")
+        setMarca("")
+      }}
+     className="text-slate-400 hover:text-white transition"
+    >
+      Limpiar
+    </button>
+
+  </div>
+
+</div>
+               <div className="mx-auto max-w-6xl">
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+
+                  {cargando ? (
+      <p className="col-span-full text-center text-slate-400 text-lg py-10">
+        Cargando productos...
+      </p>
+                  ) : errorCatalogo ? (
+      <p className="col-span-full text-center text-red-400 text-lg py-10">
+        {errorCatalogo}
+      </p>
+    ) : productosFiltrados.length === 0 ? (
+      <p className="col-span-full text-center text-slate-400 text-lg py-10">
+        No se encontraron productos.
+      </p>
+                  ) : (
+                    productosFiltrados.map((product) => (
+                      <Tarjeta
+                        key={product.id}
+                        product={product}
+                        toggleCarrito={toggleCarrito}
+                      />
+                    ))
+                  )}
+
+  </div>
                 </div>
               </main>
 
