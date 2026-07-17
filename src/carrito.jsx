@@ -1,80 +1,256 @@
+import { ShoppingBag, Trash2, ShieldCheck } from "lucide-react";
+
 function Carrito({ cart, vaciarCarrito, quitarDelCarrito, cambiarTalla }) {
-  const total = cart.reduce((sum, item) => sum + Number(item.precio), 0)
+  const total = cart.reduce((sum, item) => sum + Number(item.precio), 0);
+
+  if (cart.length === 0) {
+    return (
+      <div className="min-h-screen bg-slate-950 pt-24 px-6 text-white">
+        <div className="mx-auto flex max-w-xl flex-col items-center rounded-3xl border border-slate-800 bg-slate-900 p-12 text-center">
+          <ShoppingBag size={70} className="mb-6 text-emerald-400" />
+
+          <h1 className="text-4xl font-black">
+            Tu carrito está vacío
+          </h1>
+
+          <p className="mt-4 text-slate-400">
+            Explora nuestro catálogo y encuentra el producto perfecto para ti.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-slate-900 text-white p-6 pt-20">
-      <div className="max-w-4xl mx-auto">
-        <div className="flex items-center justify-between mb-6">
-          <h1 className="text-4xl font-bold">
-            Carrito de Compras
-          </h1>
-          {cart.length > 0 && (
-            <button
-              onClick={vaciarCarrito}
-              className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg"
-            >
-              Vaciar Carrito
-            </button>
-          )}
+    <div className="min-h-screen bg-slate-950 pt-24 px-6 pb-10 text-white">
+
+      <div className="mx-auto max-w-7xl">
+
+        <div className="mb-10 flex items-center justify-between">
+
+          <div>
+            <h1 className="text-5xl font-black">
+              Carrito
+            </h1>
+
+            <p className="mt-2 text-slate-400">
+              {cart.length} artículo{cart.length !== 1 && "s"}
+            </p>
+          </div>
+
         </div>
 
-        {cart.length === 0 ? (
-          <p className="text-slate-400">Tu carrito está vacío.</p>
-        ) : (
-          <>
-            <div className="space-y-4">
-              {cart.map((item, index) => (
-                <div
-                  key={`${item.id}-${index}`}
-                  className="flex items-center gap-4 bg-slate-800 p-4 rounded-lg border border-slate-700"
-                >
-                  <img
-                    className="w-16 h-16 object-contain"
-                    src={item.imagen}
-                    alt={item.nombre}
-                  />
-                  <div className="flex-1">
-                    <h3 className="text-lg font-semibold">{item.nombre}</h3>
-                    <p className="text-slate-400 text-sm">{item.categoria}</p>
+        <div className="grid gap-8 lg:grid-cols-[2fr_1fr]">
+
+          <div className="space-y-6">
+
+            {cart.map((item, index) => (
+
+              <div
+                key={`${item.id}-${index}`}
+                className="
+                  rounded-3xl
+                  border
+                  border-slate-700
+                  bg-slate-900
+                  p-6
+                  transition-all
+                  duration-300
+                  hover:border-emerald-500/40
+                "
+              >
+
+                <div className="flex flex-col gap-6 md:flex-row">
+
+                  <div className="flex h-40 w-full items-center justify-center rounded-2xl bg-slate-950 md:w-44">
+
+                    <img
+                      src={item.imagen}
+                      alt={item.nombre}
+                      className="h-32 object-contain"
+                    />
+
                   </div>
-                  <select
-                    value={item.tallaSeleccionada}
-                    onChange={(e) => cambiarTalla(index, e.target.value)}
-                    className="bg-slate-700 text-white p-2 rounded"
-                  >
-                    <option value="">Selecciona talla</option>
-                    {item.tallas.split(',').map((talla) => (
-                      <option key={talla} value={talla}>
-                        {talla}
-                      </option>
-                    ))}
-                  </select>
-                  <span className="text-green-400 font-bold text-lg">
-                    ${Number(item.precio).toFixed(2)}
-                  </span>
-                  <button
-                    onClick={() => quitarDelCarrito(index)}
-                    className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-lg text-sm"
-                  >
-                    Quitar
-                  </button>
+
+                  <div className="flex flex-1 flex-col justify-between">
+
+                    <div>
+
+                      <p className="text-xs uppercase tracking-[0.25em] text-slate-500">
+                        {item.marca || "SportHub"}
+                      </p>
+
+                      <h2 className="mt-2 text-2xl font-bold">
+                        {item.nombre}
+                      </h2>
+
+                      <p className="mt-2 text-slate-400">
+                        {item.deporte} • {item.categoria}
+                      </p>
+
+                    </div>
+
+                    <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
+
+                      <select
+                        value={item.tallaSeleccionada}
+                        onChange={(e) =>
+                          cambiarTalla(index, e.target.value)
+                        }
+                        className="
+                          rounded-xl
+                          border
+                          border-slate-700
+                          bg-slate-950
+                          px-4
+                          py-2
+                          text-white
+                          outline-none
+                          focus:border-emerald-500
+                        "
+                      >
+                        <option value="">Selecciona talla</option>
+
+                        {item.tallas.split(",").map((talla) => (
+                          <option key={talla}>
+                            {talla}
+                          </option>
+                        ))}
+                      </select>
+
+                      <p className="text-3xl font-black text-emerald-400">
+                        ${Number(item.precio).toFixed(2)}
+                      </p>
+
+                    </div>
+
+                    <button
+                      onClick={() => quitarDelCarrito(index)}
+                      className="
+                        mt-6
+                        flex
+                        w-fit
+                        items-center
+                        gap-2
+                        text-slate-400
+                        transition
+                        hover:text-red-500
+                      "
+                    >
+                      <Trash2 size={18} />
+
+                      Eliminar
+                    </button>
+
+                  </div>
+
                 </div>
-              ))}
+
+              </div>
+
+            ))}
+
+          </div>
+
+          <div
+            className="
+              h-fit
+              rounded-3xl
+              border
+              border-slate-700
+              bg-slate-900
+              p-8
+              lg:sticky
+              lg:top-24
+            "
+          >
+
+            <h2 className="text-2xl font-bold">
+              Resumen del pedido
+            </h2>
+
+            <div className="mt-8 space-y-5">
+
+              <div className="flex justify-between">
+                <span className="text-slate-400">
+                  Subtotal
+                </span>
+
+                <span>
+                  ${total.toFixed(2)}
+                </span>
+              </div>
+
+              <div className="flex justify-between">
+                <span className="text-slate-400">
+                  Envío
+                </span>
+
+                <span className="text-emerald-400">
+                  Gratis
+                </span>
+              </div>
+
+              <hr className="border-slate-700" />
+
+              <div className="flex justify-between text-2xl font-black">
+                <span>Total</span>
+
+                <span className="text-emerald-400">
+                  ${total.toFixed(2)}
+                </span>
+              </div>
+
             </div>
 
-            <div className="mt-6 bg-slate-800 p-4 rounded-lg border border-slate-700 text-right">
-              <p className="text-2xl font-bold">
-                Total: <span className="text-green-400">${total.toFixed(2)}</span>
-              </p>
-              <button className="mt-4 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg text-lg font-semibold">
-                Pagar
-              </button>
-            </div>
-          </>
-        )}
+            <button
+              className="
+                mt-8
+                flex
+                w-full
+                items-center
+                justify-center
+                gap-2
+                rounded-2xl
+                bg-emerald-500
+                py-4
+                text-lg
+                font-semibold
+                transition
+                hover:bg-emerald-600
+              "
+            >
+              <ShieldCheck size={20} />
+
+              Proceder al pago
+            </button>
+
+            <button
+              onClick={vaciarCarrito}
+              className="
+                mt-4
+                w-full
+                rounded-2xl
+                border
+                border-slate-700
+                py-3
+                text-slate-400
+                transition
+                hover:border-red-500
+                hover:text-red-500
+              "
+            >
+              Vaciar carrito
+            </button>
+
+          </div>
+
+        </div>
+
       </div>
+
     </div>
-  )
+  );
 }
 
-export default Carrito
+export default Carrito;

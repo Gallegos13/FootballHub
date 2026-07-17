@@ -90,13 +90,14 @@ const productosFiltrados = productos.filter(producto => {
 
     <div className="absolute -top-40 -left-40 w-[500px] h-[500px] rounded-full bg-green-500/10 blur-3xl"></div>
 
-    <div className="absolute top-96 right-0 w-[500px] h-[500px] rounded-full bg-blue-500/10 blur-3xl"></div>
+    <div className="absolute top-96 right-0 w-[500px] h-[500px] rounded-full bg-blue-500/10 blur-3xl pointer-events-none"></div>
 
-    <div className="relative max-w-7xl mx-auto px-6"></div>
+    <div className="relative max-w-7xl mx-auto px-6">
                 <Portada />
                 <h2 className="text-4xl font-extrabold mb-8">
                   Productos destacados
-                </h2>
+                </h2> 
+                </div>
 <div className="mb-10 space-y-5">
 
   <div className="relative mb-4">
