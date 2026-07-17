@@ -5,6 +5,7 @@ import Tarjeta from './tarjeta'
 import { Routes, Route } from 'react-router-dom'
 import Carrito from './carrito'
 import ProductoDetalle from './detalleproducto'
+import Portada from './Portada'
 
 function App() {
   const [productos, setProductos] = useState([])
@@ -51,7 +52,8 @@ function App() {
     if (correo.trim() === "") {
       return
     }
-    setSuscrito(true)
+    const newLocal = true
+    setSuscrito(newLocal)
   }
 
   return (
@@ -62,8 +64,9 @@ function App() {
           <>
             <Navbar cartCount={cart.length} />
             <div className="min-h-screen bg-slate-900 text-white flex flex-col">
-              <main className="max-w-6xl mx-auto p-6 flex-1 pt-20">
-                <h2 className="text-3xl font-bold mb-6">
+              <main className="max-w-7xl mx-auto px-6 py-10 flex-1 pt-24">
+                <Portada />
+                <h2 className="text-4xl font-extrabold mb-8">
                   Productos destacados
                 </h2>
 

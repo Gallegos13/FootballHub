@@ -1,6 +1,8 @@
-const express = require('express');
-const mysql = require('mysql2');
-const cors = require('cors');
+require("dotenv").config();
+
+const express = require("express");
+const { Pool } = require("pg");
+const cors = require("cors");
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -8,51 +10,44 @@ const port = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-const db = mysql.createConnection({
-    host: 'acela.proxy.rlwy.net',
-    user: 'root',
-    password: 'VWnCpMcptudAffkxlcfGxQyaMIjYaZgC',
-    database: 'railway',
-    port: '50514'
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false,
+  },
 });
 
-db.connect((err) => {
-    if(err){
-        console.error('Error al conectar', err);
-    } else {
-        console.log('Conexión establecida');
-    }
+pool
+  .connect()
+  .then(() => console.log("Conectado a Supabase"))
+  .catch((err) => console.error("Error de conexión:", err));
+
+app.get("/productos", async (req, res) => {
+  try {
+    const result = await pool.query("SELECT * FROM productos ORDER BY id");
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error al obtener productos");
+  }
 });
 
-
-app.get('/productos', (req, res) => {
-    db.query('SELECT * FROM productos', (err, result) => {
-        if(err){
-            res.status(500).send('Error al obtener productos');
-            return;
-        }
-
-        res.json(result);
-    });
-});
-
-app.get('/productos/:id', (req, res) => {
+app.get("/productos/:id", async (req, res) => {
+  try {
     const { id } = req.params;
 
-    db.query(
-        'SELECT * FROM productos WHERE id = ?',
-        [id],
-        (err, result) => {
-            if(err){
-                res.status(500).send('Error');
-                return;
-            }
-
-            res.json(result[0]);
-        }
+    const result = await pool.query(
+      "SELECT * FROM productos WHERE id = $1",
+      [id]
     );
+
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error al obtener el producto");
+  }
 });
 
 app.listen(port, () => {
-    console.log(`Servidor corriendo en puerto ${port}`);
+  console.log(`Servidor corriendo en puerto ${port}`);
 });
