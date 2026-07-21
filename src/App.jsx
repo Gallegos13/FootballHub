@@ -103,7 +103,7 @@ const productosFiltrados = productos.filter(producto => {
   <div className="relative mb-4">
     <input
       type="text"
-      placeholder="🔍 Buscar productos..."
+      placeholder="Buscar productos..."
       value={busqueda}
       onChange={(e)=>setBusqueda(e.target.value)}
       className="w-full rounded-xl bg-slate-900 border border-slate-700 px-5 py-3 text-white placeholder-slate-400 focus:border-green-500 focus:ring-2 focus:ring-green-500 outline-none transition"
@@ -117,7 +117,7 @@ const productosFiltrados = productos.filter(producto => {
       onChange={(e)=>setCategoria(e.target.value)}
       className="rounded-xl bg-slate-900 border border-slate-700 px-4 py-3 text-white focus:border-green-500 focus:ring-2 focus:ring-green-500 outline-none"
     >
-      <option value="">📂 Categoría</option>
+      <option value="">Categoría</option>
       {categorias.map(cat=>(
         <option key={cat}>{cat}</option>
       ))}
@@ -128,7 +128,7 @@ const productosFiltrados = productos.filter(producto => {
       onChange={(e)=>setDeporte(e.target.value)}
       className="rounded-xl bg-slate-900 border border-slate-700 px-4 py-3 text-white focus:border-green-500 focus:ring-2 focus:ring-green-500 outline-none"
     >
-      <option value="">⚽ Deporte</option>
+      <option value="">Deporte</option>
       {deportes.map(dep=>(
         <option key={dep}>{dep}</option>
       ))}
@@ -139,7 +139,7 @@ const productosFiltrados = productos.filter(producto => {
       onChange={(e)=>setMarca(e.target.value)}
       className="rounded-xl bg-slate-900 border border-slate-700 px-4 py-3 text-white focus:border-green-500 focus:ring-2 focus:ring-green-500 outline-none"
     >
-      <option value="">🏷️ Marca</option>
+      <option value="">Marca</option>
       {marcas.map(mar=>(
         <option key={mar}>{mar}</option>
       ))}
