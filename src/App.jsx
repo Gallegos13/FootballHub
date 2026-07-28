@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { Toaster, toast } from 'sonner'
 import './App.css'
 import Navbar from './navbar'
 import Tarjeta from './tarjeta'
@@ -36,6 +37,11 @@ const categorias = [...new Set(productos.map(p => p.categoria).filter(Boolean))]
 const deportes = [...new Set(productos.map(p => p.deporte).filter(Boolean))]
 const marcas = [...new Set(productos.map(p => p.marca).filter(Boolean))]
   const toggleCarrito = (product) => {
+    const enCarrito = cart.filter(item => item.id === product.id).length
+    if (product.stock && enCarrito >= product.stock) {
+      toast.error(`No hay más stock disponible. Solo hay ${product.stock} unidades.`)
+      return
+    }
     setCart([
       ...cart,
       {
@@ -79,6 +85,8 @@ const productosFiltrados = productos.filter(producto => {
   )
 })
   return (
+    <>
+    <Toaster richColors position="top-center" />
     <Routes>
       <Route
         path='/'
@@ -181,6 +189,7 @@ const productosFiltrados = productos.filter(producto => {
                       <Tarjeta
                         key={product.id}
                         product={product}
+                        cart={cart}
                         toggleCarrito={toggleCarrito}
                       />
                     ))
@@ -243,10 +252,11 @@ const productosFiltrados = productos.filter(producto => {
       element={
         <>
           <Navbar cartCount={cart.length} />
-          <ProductoDetalle toggleCarrito={toggleCarrito} />
+          <ProductoDetalle toggleCarrito={toggleCarrito} cart={cart} />
         </>
       } />
     </Routes>
+    </>
   )
 }
 

@@ -2,8 +2,10 @@ import { Link } from "react-router-dom";
 import { ShoppingCart, ArrowRight, Tag, Heart } from "lucide-react";
 import { useNavigate} from "react-router-dom";
 
-function Tarjeta({ product, toggleCarrito }) {
+function Tarjeta({ product, cart, toggleCarrito }) {
   const navigate = useNavigate();
+  const enCarrito = cart ? cart.filter(item => item.id === product.id).length : 0
+  const sinStock = product.stock !== undefined && enCarrito >= product.stock
 
   return (
     <div
@@ -83,30 +85,32 @@ function Tarjeta({ product, toggleCarrito }) {
 
         <div className="border-t border-slate-800 pt-5">
           <button
+            disabled={sinStock}
             onClick={(e) => {
               e.stopPropagation();
               toggleCarrito(product);
             }}
-            className="
+            className={`
               flex
               w-full
               items-center
               justify-center
               gap-2
               rounded-2xl
-              bg-emerald-500
               py-3
               font-semibold
               text-white
               transition-all
               duration-300
-              hover:scale-[1.02]
-              hover:bg-emerald-600
               active:scale-95
-            "
+              ${sinStock
+                ? 'cursor-not-allowed bg-slate-700 text-slate-400'
+                : 'bg-emerald-500 hover:scale-[1.02] hover:bg-emerald-600'
+              }
+            `}
           >
             <ShoppingCart size={18} />
-            Agregar al carrito
+            {sinStock ? 'Sin stock' : 'Agregar al carrito'}
           </button>
 
           <Link

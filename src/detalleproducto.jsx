@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 
-function ProductoDetalle({ toggleCarrito }) {
+function ProductoDetalle({ toggleCarrito, cart }) {
   const { id } = useParams();
   const [producto, setProducto] = useState(null);
   const [talla, setTalla] = useState("");
@@ -45,6 +45,9 @@ function ProductoDetalle({ toggleCarrito }) {
       tallaSeleccionada: talla
     });
   };
+
+  const enCarrito = cart ? cart.filter(item => item.id === Number(id)).length : 0
+  const sinStock = producto.stock !== undefined && enCarrito >= producto.stock
 
   return (
     <div className="min-h-screen bg-slate-900 text-white p-6 pt-20">
@@ -107,10 +110,15 @@ function ProductoDetalle({ toggleCarrito }) {
             </div>
 
             <button
+              disabled={sinStock}
               onClick={handleToggleCarrito}
-              className="mt-6 px-6 py-3 rounded-lg bg-green-600 hover:bg-green-700 text-white"
+              className={`mt-6 px-6 py-3 rounded-lg text-white transition ${
+                sinStock
+                  ? 'bg-slate-600 cursor-not-allowed text-slate-400'
+                  : 'bg-green-600 hover:bg-green-700'
+              }`}
             >
-              Agregar
+              {sinStock ? 'Sin stock' : 'Agregar'}
             </button>
           </div>
         </div>

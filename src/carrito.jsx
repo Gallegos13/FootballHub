@@ -88,6 +88,12 @@ function Carrito({ cart, vaciarCarrito, quitarDelCarrito, cambiarTalla }) {
                         {item.deporte} • {item.categoria}
                       </p>
 
+                      {item.stock !== undefined && (
+                        <p className="mt-1 text-xs text-slate-500">
+                          Stock: {item.stock} unidades
+                        </p>
+                      )}
+
                     </div>
 
                     <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
