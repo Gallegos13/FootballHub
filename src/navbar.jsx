@@ -34,7 +34,7 @@ function Navbar({ cartCount }) {
       transition={{ duration: 0.5 }}
       className="fixed top-0 left-0 w-full z-50 border-b border-slate-700/50 bg-slate-950/80 backdrop-blur-lg"
     >
-      <div className="max-w-7xl mx-auto grid grid-cols-3 items-center px-6 py-4">
+      <div className="max-w-7xl mx-auto flex items-center justify-between md:grid md:grid-cols-3 px-6 py-4">
         <Link
           to="/"
           className="flex items-center gap-2 text-white text-2xl font-bold"
