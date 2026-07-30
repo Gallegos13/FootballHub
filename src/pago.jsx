@@ -93,7 +93,7 @@ function Pago({ cart, vaciarCarrito }) {
               )}
             </div>
           </div>
-          <p className="text-xl sm:text-2xl font-black text-[#2c6cee] whitespace-nowrap self-end sm:self-center">${total.toFixed(2)} MXN</p>
+          <p className="text-xl sm:text-2xl font-black text-[#3072f0] whitespace-nowrap self-end sm:self-center">${total.toFixed(2)} MXN</p>
         </div>
 
         <Pasarela
