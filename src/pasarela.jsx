@@ -188,16 +188,16 @@ export default function Pasarela({ productName, amount, currency, onSuccess }) {
         @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;600&display=swap');
 
         .bv-root {
-          --bg: #0b0e14;
-          --panel: #141924;
-          --panel-2: #10141d;
-          --border: #232a3a;
-          --text: #ece9e2;
-          --text-dim: #8b93a7;
-          --accent: #f2a93b;
-          --accent-soft: #f2a93b22;
-          --teal: #5eead4;
-          --success: #6ee7b7;
+          --bg: #020617;
+          --panel: #0f172a;
+          --panel-2: #0a0f1e;
+          --border: #1e293b;
+          --text: #e2e8f0;
+          --text-dim: #94a3b8;
+          --accent: #2563eb;
+          --accent-soft: #2563eb33;
+          --teal: #2563eb;
+          --success: #3b82f6;
           --danger: #f87171;
           font-family: 'Inter', sans-serif;
           color: var(--text);
@@ -210,8 +210,8 @@ export default function Pasarela({ productName, amount, currency, onSuccess }) {
           position: relative;
           isolation: isolate;
           background:
-            radial-gradient(680px 420px at 18% 0%, rgba(242,169,59,0.10), transparent 60%),
-            radial-gradient(900px 560px at 100% 100%, rgba(94,234,212,0.06), transparent 55%),
+            radial-gradient(680px 420px at 18% 0%, rgba(37,99,235,0.15), transparent 60%),
+            radial-gradient(900px 560px at 100% 100%, rgba(37,99,235,0.10), transparent 55%),
             var(--bg);
         }
         .bv-root::before {
@@ -253,7 +253,7 @@ export default function Pasarela({ productName, amount, currency, onSuccess }) {
         .bv-brand-mark {
           width: 32px; height: 32px;
           border-radius: 9px;
-          background: linear-gradient(150deg, #f6c268, var(--accent) 45%, #b9791b);
+          background: linear-gradient(150deg, #3b82f6, var(--accent) 45%, #1d4ed8);
           display: flex; align-items: center; justify-content: center;
           box-shadow: 0 3px 14px var(--accent-soft), inset 0 1px 0 rgba(255,255,255,0.35);
           position: relative;
@@ -286,6 +286,14 @@ export default function Pasarela({ productName, amount, currency, onSuccess }) {
         }
         @media (min-width: 760px) {
           .bv-grid { grid-template-columns: 380px 1fr; }
+        }
+        @media (max-width: 480px) {
+          .bv-root { padding: 24px 12px; }
+          .bv-panel { padding: 20px 16px; }
+          .bv-brand { margin-bottom: 20px; }
+          .bv-brand-name { font-size: 17px; }
+          .bv-card-face { padding: 16px; }
+          .bv-order-amount { font-size: 18px; }
         }
 
         .bv-card-stage {
@@ -500,14 +508,14 @@ export default function Pasarela({ productName, amount, currency, onSuccess }) {
         .bv-submit {
           width: 100%;
           margin-top: 8px;
-          background: linear-gradient(135deg, #f6c268, var(--accent) 55%, #d98f1f);
-          color: #1a1206;
+          background: #2563eb;
+          color: #ffffff;
           border: none;
-          border-radius: 10px;
+          border-radius: 12px;
           padding: 14px;
-          font-family: 'Space Grotesk', sans-serif;
-          font-weight: 700;
-          font-size: 14px;
+          font-family: 'Inter', sans-serif;
+          font-weight: 600;
+          font-size: 15px;
           cursor: pointer;
           display: flex;
           align-items: center;
@@ -516,20 +524,10 @@ export default function Pasarela({ productName, amount, currency, onSuccess }) {
           position: relative;
           overflow: hidden;
           isolation: isolate;
-          transition: filter 0.15s, transform 0.1s, box-shadow 0.2s;
-          box-shadow: 0 10px 24px -10px var(--accent-soft);
+          transition: all 0.15s, transform 0.1s;
+          box-shadow: 0 4px 14px rgba(37,99,235,0.3);
         }
-        .bv-submit::after {
-          content: '';
-          position: absolute;
-          top: 0; left: -60%;
-          width: 40%; height: 100%;
-          background: linear-gradient(90deg, transparent, rgba(255,255,255,0.45), transparent);
-          transform: skewX(-20deg);
-          transition: left 0.6s ease;
-        }
-        .bv-submit:hover:not(:disabled)::after { left: 130%; }
-        .bv-submit:hover:not(:disabled) { filter: brightness(1.05); box-shadow: 0 14px 30px -10px var(--accent-soft); }
+        .bv-submit:hover:not(:disabled) { background: #1d4ed8; transform: scale(1.01); box-shadow: 0 6px 20px rgba(37,99,235,0.4); }
         .bv-submit:active:not(:disabled) { transform: scale(0.99); }
         .bv-submit:disabled {
           opacity: 0.5;
@@ -677,13 +675,16 @@ export default function Pasarela({ productName, amount, currency, onSuccess }) {
           .bv-root { padding: 28px 14px; }
           .bv-panel { padding: 20px; }
           .bv-field-row { grid-template-columns: 1fr; gap: 16px; }
+          .bv-receipt { max-width: 100%; }
+          .bv-status-wrap { padding: 20px 8px; min-height: 220px; }
+          .bv-result-title { font-size: 17px; }
         }
       `}</style>
 
       <div className="bv-shell">
         <div className="bv-brand">
           <div className="bv-brand-mark">
-            <Lock size={15} color="#1a1206" strokeWidth={2.5} />
+            <Lock size={15} color="#ffffff" strokeWidth={2.5} />
           </div>
           <span className="bv-brand-name">Bóveda Pay</span>
           <span className="bv-brand-tag">· pasarela simulada</span>
@@ -693,9 +694,9 @@ export default function Pasarela({ productName, amount, currency, onSuccess }) {
           <div>
             <div className="bv-card-stage">
               <svg className="bv-dial" viewBox="0 0 200 200" fill="none">
-                <circle cx="100" cy="100" r="98" stroke="#f2a93b" strokeOpacity="0.12" />
-                <circle cx="100" cy="100" r="80" stroke="#f2a93b" strokeOpacity="0.09" />
-                <circle cx="100" cy="100" r="4" fill="#f2a93b" fillOpacity="0.18" />
+                <circle cx="100" cy="100" r="98" stroke="#2563eb" strokeOpacity="0.15" />
+                <circle cx="100" cy="100" r="80" stroke="#2563eb" strokeOpacity="0.12" />
+                <circle cx="100" cy="100" r="4" fill="#2563eb" fillOpacity="0.25" />
                 {Array.from({ length: 24 }).map((_, i) => {
                   const angle = (i / 24) * Math.PI * 2;
                   const r1 = 88, r2 = i % 6 === 0 ? 78 : 84;
@@ -704,7 +705,7 @@ export default function Pasarela({ productName, amount, currency, onSuccess }) {
                   const x2 = 100 + r2 * Math.cos(angle);
                   const y2 = 100 + r2 * Math.sin(angle);
                   return (
-                    <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="#f2a93b" strokeOpacity="0.14" strokeWidth="1.5" />
+                    <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="#2563eb" strokeOpacity="0.18" strokeWidth="1.5" />
                   );
                 })}
               </svg>
@@ -866,7 +867,7 @@ export default function Pasarela({ productName, amount, currency, onSuccess }) {
                     return (
                       <div key={s} className={`bv-step ${state}`}>
                         <span className="bv-step-dot">
-                          {state === "done" && <CheckCircle2 size={11} color="#0b0e14" strokeWidth={3} />}
+                          {state === "done" && <CheckCircle2 size={11} color="var(--panel)" strokeWidth={3} />}
                         </span>
                         {s}
                       </div>

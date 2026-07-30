@@ -81,29 +81,38 @@ function Navbar({ cartCount }) {
           <div className="relative" ref={dropdownRef}>
             <button
               onClick={() => setDropdownAbierto(!dropdownAbierto)}
-              className="flex items-center gap-2 rounded-xl bg-slate-800 px-4 py-2 font-semibold text-white transition hover:bg-slate-700"
+              className="flex items-center gap-3 rounded-xl border border-slate-700/50 bg-slate-800/80 px-3 py-1.5 font-semibold text-white transition-all duration-300 hover:border-blue-400/50 hover:bg-slate-800"
             >
-              <User size={18} />
-              <span className="max-w-28 truncate">{user.email}</span>
-              <ChevronDown size={16} className={`transition-transform ${dropdownAbierto ? "rotate-180" : ""}`} />
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 text-xs font-bold text-white shadow-sm">
+                {user.email.charAt(0).toUpperCase()}
+              </div>
+              <span className="max-w-20 sm:max-w-28 md:max-w-36 truncate text-sm">{user.email}</span>
+              <ChevronDown size={14} className={`text-slate-400 transition-transform ${dropdownAbierto ? "rotate-180" : ""}`} />
             </button>
 
             {dropdownAbierto && (
-              <div className="absolute right-0 mt-2 w-56 rounded-xl bg-slate-800 border border-slate-700 shadow-xl overflow-hidden">
-                <div className="px-4 py-3 border-b border-slate-700">
-                  <p className="text-sm text-slate-400">Cuenta</p>
-                  <p className="text-white font-medium truncate">{user.email}</p>
+              <div className="absolute right-0 mt-3 w-56 rounded-xl border border-slate-700/50 bg-slate-800/95 shadow-2xl shadow-blue-500/5 backdrop-blur-xl overflow-hidden">
+                <div className="px-4 py-4 border-b border-slate-700/50">
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-blue-700 text-sm font-bold text-white shadow-md">
+                      {user.email.charAt(0).toUpperCase()}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-xs text-slate-400">Cuenta</p>
+                      <p className="text-sm font-semibold text-white truncate">{user.email}</p>
+                    </div>
+                  </div>
                 </div>
                 <button
                   onClick={() => { setDropdownAbierto(false); navigate("/mis-compras"); }}
-                  className="flex items-center gap-3 w-full px-4 py-3 text-slate-300 hover:bg-slate-700 hover:text-white transition text-left"
+                  className="flex items-center gap-3 w-full px-4 py-3 text-slate-300 hover:bg-blue-600/20 hover:text-blue-400 transition-all duration-200 text-left"
                 >
                   <ClipboardList size={18} />
                   Ver mis compras
                 </button>
                 <button
                   onClick={handleSignOut}
-                  className="flex items-center gap-3 w-full px-4 py-3 text-slate-300 hover:bg-slate-700 hover:text-white transition text-left border-t border-slate-700"
+                  className="flex items-center gap-3 w-full px-4 py-3 text-slate-300 hover:bg-red-600/20 hover:text-red-400 transition-all duration-200 text-left border-t border-slate-700/50"
                 >
                   <LogOut size={18} />
                   Cerrar sesión
@@ -164,13 +173,21 @@ function Navbar({ cartCount }) {
             </li>
             {user ? (
               <>
-                <li className="w-full px-6 border-t border-slate-700 pt-3">
-                  <p className="text-sm text-slate-400 mb-2">{user.email}</p>
+                <li className="flex justify-center w-full px-6 -mt-1">
+                  <div className="flex items-center gap-3 rounded-xl bg-slate-800/50 px-4 py-2.5 w-full max-w-xs">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 text-xs font-bold text-white shadow-sm">
+                      {user.email.charAt(0).toUpperCase()}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-xs text-slate-400">Cuenta</p>
+                      <p className="text-sm text-white font-medium truncate">{user.email}</p>
+                    </div>
+                  </div>
                 </li>
                 <li>
                   <button
                     onClick={() => { setMenuAbierto(false); navigate("/mis-compras"); }}
-                    className="flex items-center gap-2 hover:text-blue-400 transition"
+                    className="flex items-center gap-3 hover:text-blue-400 transition"
                   >
                     <ClipboardList size={18} />
                     Ver mis compras
@@ -179,7 +196,7 @@ function Navbar({ cartCount }) {
                 <li>
                   <button
                     onClick={() => { handleSignOut(); setMenuAbierto(false); }}
-                    className="flex items-center gap-2 hover:text-red-400 transition"
+                    className="flex items-center gap-3 hover:text-red-400 transition"
                   >
                     <LogOut size={18} />
                     Cerrar sesión

@@ -60,7 +60,7 @@ function Carrito({ cart, vaciarCarrito, quitarDelCarrito, cambiarTalla }) {
                   p-6
                   transition-all
                   duration-300
-                  hover:border-emerald-500/40
+                  hover:border-blue-400/82
                 "
               >
 

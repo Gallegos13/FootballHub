@@ -21,9 +21,8 @@ function Tarjeta({ product, cart, toggleCarrito }) {
         transition-all
         duration-300
         hover:-translate-y-2
-        hover:border-emerald-500/40
-        hover:shadow-2xl
-        hover:shadow-emerald-500/10
+        hover:border-blue-400
+        hover:shadow-[0_0_40px_rgba(59,130,246,0.35)]
       "
     >
       <div className="relative flex h-64 items-center justify-center bg-gradient-to-br from-slate-950 to-slate-900">
