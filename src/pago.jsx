@@ -26,8 +26,6 @@ function Pago({ cart, vaciarCarrito }) {
   };
 
   const handleSuccess = async (tx) => {
-    setStockError("");
-
     try {
       const res = await fetch("https://footballhub-vpka.onrender.com/actualizar-stock", {
         method: "POST",
