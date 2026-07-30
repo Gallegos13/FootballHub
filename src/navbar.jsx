@@ -34,7 +34,7 @@ function Navbar({ cartCount }) {
       transition={{ duration: 0.5 }}
       className="fixed top-0 left-0 w-full z-50 border-b border-slate-700/50 bg-slate-950/80 backdrop-blur-lg"
     >
-      <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
+      <div className="max-w-7xl mx-auto grid grid-cols-3 items-center px-6 py-4">
         <Link
           to="/"
           className="flex items-center gap-2 text-white text-2xl font-bold"
@@ -42,7 +42,7 @@ function Navbar({ cartCount }) {
           <span>SportHub</span>
         </Link>
 
-        <ul className="hidden md:flex items-center gap-8 text-slate-300 font-medium">
+        <ul className="hidden md:flex justify-center gap-8 text-slate-300 font-medium">
           <li>
             <Link
               to="/"
@@ -77,64 +77,66 @@ function Navbar({ cartCount }) {
           </li>
         </ul>
 
-        {user ? (
-          <div className="relative" ref={dropdownRef}>
-            <button
-              onClick={() => setDropdownAbierto(!dropdownAbierto)}
-              className="flex items-center gap-3 rounded-xl border border-slate-700/50 bg-slate-800/80 px-3 py-1.5 font-semibold text-white transition-all duration-300 hover:border-blue-400/50 hover:bg-slate-800"
-            >
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 text-xs font-bold text-white shadow-sm">
-                {user.email.charAt(0).toUpperCase()}
-              </div>
-              <span className="max-w-20 sm:max-w-28 md:max-w-36 truncate text-sm">{user.email}</span>
-              <ChevronDown size={14} className={`text-slate-400 transition-transform ${dropdownAbierto ? "rotate-180" : ""}`} />
-            </button>
+        <div className="flex items-center justify-end gap-4">
+          {user ? (
+            <div className="relative" ref={dropdownRef}>
+              <button
+                onClick={() => setDropdownAbierto(!dropdownAbierto)}
+                className="flex items-center gap-3 rounded-xl border border-slate-700/50 bg-slate-800/80 px-3 py-1.5 font-semibold text-white transition-all duration-300 hover:border-blue-400/50 hover:bg-slate-800"
+              >
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 text-xs font-bold text-white shadow-sm">
+                  {user.email.charAt(0).toUpperCase()}
+                </div>
+                <span className="hidden md:block max-w-36 truncate text-sm">{user.email}</span>
+                <ChevronDown size={14} className={`hidden md:block text-slate-400 transition-transform ${dropdownAbierto ? "rotate-180" : ""}`} />
+              </button>
 
-            {dropdownAbierto && (
-              <div className="absolute right-0 mt-3 w-56 rounded-xl border border-slate-700/50 bg-slate-800/95 shadow-2xl shadow-blue-500/5 backdrop-blur-xl overflow-hidden">
-                <div className="px-4 py-4 border-b border-slate-700/50">
-                  <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-blue-700 text-sm font-bold text-white shadow-md">
-                      {user.email.charAt(0).toUpperCase()}
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="text-xs text-slate-400">Cuenta</p>
-                      <p className="text-sm font-semibold text-white truncate">{user.email}</p>
+              {dropdownAbierto && (
+                <div className="absolute right-0 mt-3 w-56 rounded-xl border border-slate-700/50 bg-slate-800/95 shadow-2xl shadow-blue-500/5 backdrop-blur-xl overflow-hidden">
+                  <div className="px-4 py-4 border-b border-slate-700/50">
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-blue-700 text-sm font-bold text-white shadow-md">
+                        {user.email.charAt(0).toUpperCase()}
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className="text-xs text-slate-400">Cuenta</p>
+                        <p className="text-sm font-semibold text-white truncate">{user.email}</p>
+                      </div>
                     </div>
                   </div>
+                  <button
+                    onClick={() => { setDropdownAbierto(false); navigate("/mis-compras"); }}
+                    className="flex items-center gap-3 w-full px-4 py-3 text-slate-300 hover:bg-blue-600/20 hover:text-blue-400 transition-all duration-200 text-left"
+                  >
+                    <ClipboardList size={18} />
+                    Ver mis compras
+                  </button>
+                  <button
+                    onClick={handleSignOut}
+                    className="flex items-center gap-3 w-full px-4 py-3 text-slate-300 hover:bg-red-600/20 hover:text-red-400 transition-all duration-200 text-left border-t border-slate-700/50"
+                  >
+                    <LogOut size={18} />
+                    Cerrar sesión
+                  </button>
                 </div>
-                <button
-                  onClick={() => { setDropdownAbierto(false); navigate("/mis-compras"); }}
-                  className="flex items-center gap-3 w-full px-4 py-3 text-slate-300 hover:bg-blue-600/20 hover:text-blue-400 transition-all duration-200 text-left"
-                >
-                  <ClipboardList size={18} />
-                  Ver mis compras
-                </button>
-                <button
-                  onClick={handleSignOut}
-                  className="flex items-center gap-3 w-full px-4 py-3 text-slate-300 hover:bg-red-600/20 hover:text-red-400 transition-all duration-200 text-left border-t border-slate-700/50"
-                >
-                  <LogOut size={18} />
-                  Cerrar sesión
-                </button>
-              </div>
-            )}
-          </div>
-        ) : (
-          <Link
-            to="/iniciodesesión"
-            className="rounded-xl bg-blue-600 px-5 py-2 font-semibold text-white transition hover:bg-blue-500"
-          >
-            Iniciar sesión
-          </Link>
-        )}
+              )}
+            </div>
+          ) : (
+            <Link
+              to="/iniciodesesión"
+              className="rounded-xl bg-blue-600 px-5 py-2 font-semibold text-white transition hover:bg-blue-500"
+            >
+              Iniciar sesión
+            </Link>
+          )}
 
-        <button
-          className="md:hidden text-slate-300 hover:text-white transition"
-          onClick={() => setMenuAbierto(!menuAbierto)}
-        >
-          {menuAbierto ? <X size={24} /> : <Menu size={24} />}
-        </button>
+          <button
+            className="md:hidden text-slate-300 hover:text-white transition"
+            onClick={() => setMenuAbierto(!menuAbierto)}
+          >
+            {menuAbierto ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
       </div>
 
       {menuAbierto && (

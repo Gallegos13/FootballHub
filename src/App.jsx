@@ -121,7 +121,7 @@ const productosFiltrados = productos.filter(producto => {
       placeholder="Buscar productos..."
       value={busqueda}
       onChange={(e)=>setBusqueda(e.target.value)}
-      className="w-full rounded-xl bg-slate-900 border border-slate-700 px-5 py-3 text-white placeholder-slate-400 focus:border-green-500 focus:ring-2 focus:ring-green-500 outline-none transition"
+      className="w-full rounded-xl bg-slate-900 border border-slate-700 px-5 py-3 text-white placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none transition"
     />
   </div>
 
@@ -130,7 +130,7 @@ const productosFiltrados = productos.filter(producto => {
     <select
       value={categoria}
       onChange={(e)=>setCategoria(e.target.value)}
-      className="rounded-xl bg-slate-900 border border-slate-700 px-4 py-3 text-white focus:border-green-500 focus:ring-2 focus:ring-green-500 outline-none"
+      className="rounded-xl bg-slate-900 border border-slate-700 px-4 py-3 text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none"
     >
       <option value="">Categoría</option>
       {categorias.map(cat=>(
@@ -141,7 +141,7 @@ const productosFiltrados = productos.filter(producto => {
     <select
       value={deporte}
       onChange={(e)=>setDeporte(e.target.value)}
-      className="rounded-xl bg-slate-900 border border-slate-700 px-4 py-3 text-white focus:border-green-500 focus:ring-2 focus:ring-green-500 outline-none"
+      className="rounded-xl bg-slate-900 border border-slate-700 px-4 py-3 text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none"
     >
       <option value="">Deporte</option>
       {deportes.map(dep=>(
@@ -152,7 +152,7 @@ const productosFiltrados = productos.filter(producto => {
     <select
       value={marca}
       onChange={(e)=>setMarca(e.target.value)}
-      className="rounded-xl bg-slate-900 border border-slate-700 px-4 py-3 text-white focus:border-green-500 focus:ring-2 focus:ring-green-500 outline-none"
+      className="rounded-xl bg-slate-900 border border-slate-700 px-4 py-3 text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none"
     >
       <option value="">Marca</option>
       {marcas.map(mar=>(
