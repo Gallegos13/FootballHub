@@ -209,6 +209,7 @@ export default function Pasarela({ productName, amount, currency, onSuccess }) {
           justify-content: center;
           position: relative;
           isolation: isolate;
+          overflow-x: hidden;
           background:
             radial-gradient(680px 420px at 18% 0%, rgba(37,99,235,0.15), transparent 60%),
             radial-gradient(900px 560px at 100% 100%, rgba(37,99,235,0.10), transparent 55%),
@@ -450,7 +451,7 @@ export default function Pasarela({ productName, amount, currency, onSuccess }) {
           animation: bvRise 0.6s 0.15s cubic-bezier(.2,.8,.2,1) both;
         }
         .bv-sandbox-note code {
-          color: var(--teal);
+          color: #3b82f6;
           font-family: 'JetBrains Mono', monospace;
         }
 
@@ -508,7 +509,7 @@ export default function Pasarela({ productName, amount, currency, onSuccess }) {
         .bv-submit {
           width: 100%;
           margin-top: 8px;
-          background: #2563eb;
+          background: #1d4ed8;
           color: #ffffff;
           border: none;
           border-radius: 12px;
@@ -525,9 +526,9 @@ export default function Pasarela({ productName, amount, currency, onSuccess }) {
           overflow: hidden;
           isolation: isolate;
           transition: all 0.15s, transform 0.1s;
-          box-shadow: 0 4px 14px rgba(37,99,235,0.3);
+          box-shadow: 0 4px 14px rgba(29,78,216,0.3);
         }
-        .bv-submit:hover:not(:disabled) { background: #1d4ed8; transform: scale(1.01); box-shadow: 0 6px 20px rgba(37,99,235,0.4); }
+        .bv-submit:hover:not(:disabled) { background: #1e3a8a; transform: scale(1.01); box-shadow: 0 6px 20px rgba(29,78,216,0.4); }
         .bv-submit:active:not(:disabled) { transform: scale(0.99); }
         .bv-submit:disabled {
           opacity: 0.5;
@@ -857,7 +858,7 @@ export default function Pasarela({ productName, amount, currency, onSuccess }) {
             {status === "processing" && (
               <div className="bv-status-wrap">
                 <div className="bv-dial-spin">
-                  <Lock size={18} color="var(--accent)" strokeWidth={2.2} />
+                  <Lock size={18} color="#2563eb" strokeWidth={2.2} />
                 </div>
                 <div className="bv-result-title">Procesando pago</div>
                 <div className="bv-result-sub">Esto puede tardar unos segundos.</div>
