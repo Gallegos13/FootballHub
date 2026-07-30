@@ -48,6 +48,30 @@ app.get("/productos/:id", async (req, res) => {
   }
 });
 
+app.post("/actualizar-stock", async (req, res) => {
+  const { items } = req.body;
+
+  if (!items || !Array.isArray(items) || items.length === 0) {
+    return res.status(400).json({ error: "Se requiere un arreglo de items" });
+  }
+
+  try {
+    for (const { id, cantidad } of items) {
+      if (!id || !cantidad || cantidad < 1) continue;
+
+      await pool.query(
+        "UPDATE productos SET stock = stock - $1 WHERE id = $2 AND stock >= $1",
+        [cantidad, id]
+      );
+    }
+
+    res.json({ ok: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Error al actualizar el stock" });
+  }
+});
+
 app.listen(port, () => {
   console.log(`Servidor corriendo en puerto ${port}`);
 });

@@ -1,6 +1,10 @@
 import { ShoppingBag, Trash2, ShieldCheck } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "./autentificación.jsx";
 
 function Carrito({ cart, vaciarCarrito, quitarDelCarrito, cambiarTalla }) {
+  const { user } = useAuth();
+  const navigate = useNavigate();
   const total = cart.reduce((sum, item) => sum + Number(item.precio), 0);
 
   if (cart.length === 0) {
@@ -210,6 +214,13 @@ function Carrito({ cart, vaciarCarrito, quitarDelCarrito, cambiarTalla }) {
             </div>
 
             <button
+              onClick={() => {
+                if (!user) {
+                  navigate("/iniciodesesión");
+                } else {
+                  navigate("/pago");
+                }
+              }}
               className="
                 mt-8
                 flex

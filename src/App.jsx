@@ -7,7 +7,10 @@ import { Routes, Route } from 'react-router-dom'
 import Carrito from './carrito'
 import ProductoDetalle from './detalleproducto'
 import Portada from './Portada'
-
+import Iniciosesión from './iniciodesesión'
+import Registro from './registro'
+import MisCompras from './miscompras'
+import Pago from './pago'
 function App() {
   const [productos, setProductos] = useState([])
   const [cart, setCart] = useState([])
@@ -88,6 +91,10 @@ const productosFiltrados = productos.filter(producto => {
     <>
     <Toaster richColors position="top-center" />
     <Routes>
+      <Route path="/iniciodesesión" element={<Iniciosesión />} />
+      <Route path="/Registro" element={<Registro/>} />
+      <Route path="/mis-compras" element={<><Navbar cartCount={cart.length} /><MisCompras /></>} />
+      <Route path="/pago" element={<><Navbar cartCount={cart.length} /><Pago cart={cart} vaciarCarrito={vaciarCarrito} /></>} />
       <Route
         path='/'
         element={
