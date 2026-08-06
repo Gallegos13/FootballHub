@@ -71,8 +71,9 @@ function Pago({ cart, vaciarCarrito }) {
             <ArrowLeft size={20} />
           </button>
           <div>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black">Pago</h1>
-            <p className="mt-1 sm:mt-2 text-sm sm:text-base text-slate-400">Completa los datos de tu tarjeta para finalizar la compra</p>
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-blue-400">Pago seguro</p>
+            <h1 className="mt-1 text-3xl font-black leading-none tracking-tight sm:text-4xl md:text-5xl">Finaliza tu compra</h1>
+            <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-400 sm:text-base">Completa los datos de tu tarjeta para procesar el pago.</p>
           </div>
         </div>
 
@@ -81,10 +82,10 @@ function Pago({ cart, vaciarCarrito }) {
             <ShoppingBag size={22} className="text-blue-400" />
           </div>
           <div className="flex-1 min-w-0 w-full sm:w-auto">
-            <p className="font-semibold text-sm sm:text-base">{productName}</p>
+            <p className="text-sm font-bold tracking-tight sm:text-base">{productName}</p>
             <div className="flex flex-wrap gap-1.5 sm:gap-2 mt-1.5">
               {cart.slice(0, 3).map((item, i) => (
-                <span key={i} className="rounded-full bg-slate-800 px-2.5 sm:px-3 py-0.5 text-xs text-slate-400 truncate max-w-32">
+                <span key={i} className="max-w-32 truncate rounded-full bg-slate-800 px-2.5 py-0.5 text-xs font-medium text-slate-400 sm:px-3">
                   {item.nombre} ×{item.cantidad}
                 </span>
               ))}
@@ -95,7 +96,7 @@ function Pago({ cart, vaciarCarrito }) {
               )}
             </div>
           </div>
-          <p className="text-xl sm:text-2xl font-black text-[#3072f0] whitespace-nowrap self-end sm:self-center">${total.toFixed(2)} MXN</p>
+          <p className="self-end whitespace-nowrap text-xl font-black tracking-tight text-[#3072f0] tabular-nums sm:self-center sm:text-2xl">${total.toFixed(2)} <span className="text-xs font-bold tracking-wider text-blue-400">MXN</span></p>
         </div>
 
         <Pasarela
