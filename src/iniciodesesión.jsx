@@ -73,7 +73,7 @@ function Iniciosesión() {
 
         <button type="button" onClick={handleGoogle} disabled={loading || googleLoading} className="flex w-full items-center justify-center gap-3 rounded-xl border border-slate-700 bg-white px-5 py-3.5 font-semibold text-slate-900 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-60">
           {googleLoading ? <LoaderCircle size={19} className="animate-spin" /> : <LogoGoogle />}
-          Iniciar con Google
+          Entrar con Google
         </button>
 
         <p className="pt-1 text-center text-sm text-slate-400">¿No tienes cuenta? <Link to="/Registro" className="font-semibold text-blue-400 transition hover:text-blue-300">Crear cuenta</Link></p>
