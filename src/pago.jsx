@@ -17,6 +17,7 @@ function Pago({ cart, vaciarCarrito }) {
 
   const unidades = cart.reduce((sum, item) => sum + item.cantidad, 0);
   const total = cart.reduce((sum, item) => sum + Number(item.precio) * item.cantidad, 0);
+  const [parteEntera, parteDecimal] = total.toFixed(2).split(".");
   const productName = `${unidades} artículo${unidades !== 1 ? "s" : ""}`;
 
   const contarItems = () => {
@@ -96,7 +97,12 @@ function Pago({ cart, vaciarCarrito }) {
               )}
             </div>
           </div>
-          <p className="self-end whitespace-nowrap text-xl font-black tracking-tight text-[#3072f0] tabular-nums sm:self-center sm:text-2xl">${total.toFixed(2)} <span className="text-xs font-bold tracking-wider text-blue-400">MXN</span></p>
+          <p className="self-end whitespace-nowrap text-[#3978ef] tabular-nums sm:self-center" style={{ fontFamily: "'Space Grotesk', ui-sans-serif, system-ui" }}>
+            <span className="mr-0.5 align-top text-base font-bold text-blue-400">$</span>
+            <span className="text-4xl font-black tracking-[-0.035em]">{Number(parteEntera).toLocaleString("es-MX")}</span>
+            <span className="ml-0.5 align-top text-base font-bold text-blue-400">.{parteDecimal}</span>
+            <span className="ml-2 text-xs font-black tracking-[0.12em] text-slate-500">MXN</span>
+          </p>
         </div>
 
         <Pasarela

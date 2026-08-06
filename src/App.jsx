@@ -318,14 +318,14 @@ const productosFiltrados = productos.filter(producto => {
                 </div>
               </main>
 
-              <footer className="border-t border-slate-800 bg-slate-950 py-5">
-                <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 sm:px-6 md:flex-row md:items-center md:justify-between lg:px-8">
-                  <div className="flex items-center gap-3">
-                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-blue-500/10 text-blue-400"><Mail size={18} /></div>
-                    <div><h3 className="text-sm font-bold">
+              <footer className="border-t border-slate-800 bg-slate-950 py-4">
+                <div className="mx-auto flex max-w-6xl flex-col gap-3 px-6 md:flex-row md:items-center md:justify-between">
+                  <div className="flex items-center gap-2.5">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-blue-500/15 bg-blue-500/10 text-blue-400"><Mail size={18} /></div>
+                    <div><h3 className="text-lg font-bold leading-tight">
                       Promociones Exclusivas
                     </h3>
-                    <p className="text-xs text-slate-500">
+                    <p className="mt-0.5 text-sm text-slate-400">
                       Recibe ofertas y novedades semanales.
                     </p></div>
                   </div>
@@ -337,13 +337,13 @@ const productosFiltrados = productos.filter(producto => {
                         value={correo}
                         onChange={(e) => setCorreo(e.target.value)}
                         placeholder="Tu correo"
-                        className="min-w-56 rounded-lg border border-slate-800 bg-slate-900 px-3 py-2 text-sm text-white outline-none transition placeholder:text-slate-500 focus:border-blue-500"
+                        className="min-w-56 rounded-xl border border-slate-800 bg-slate-900 px-4 py-2.5 text-sm text-white outline-none transition placeholder:text-slate-500 focus:border-blue-500"
                       />
                       <button
                         onClick={suscribirse}
-                        className="flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold transition hover:bg-blue-500"
+                        className="flex items-center justify-center gap-1 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-bold shadow-lg shadow-blue-600/10 transition hover:-translate-y-0.5 hover:bg-blue-500"
                       >
-                        Suscribirme <ArrowRight size={17} />
+                        Suscribirme <ArrowRight size={16} />
                       </button>
                     </div>
                   ) : (

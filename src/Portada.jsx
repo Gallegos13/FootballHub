@@ -18,7 +18,7 @@ export default function Portada() {
           </span>
 
           <h1 className="mt-6 text-4xl font-black leading-[1.08] tracking-tight text-white sm:text-5xl lg:text-6xl">
-            Vive el deporte <span className="text-blue-400">a tu manera.</span>
+            Vive el deporte <span className="text-[#5b72ff]">a tu manera.</span>
           </h1>
 
           <p className="mt-6 max-w-lg text-lg text-slate-300">

@@ -108,7 +108,7 @@ function ProductoDetalle({ toggleCarrito, cart }) {
           <ArrowLeft size={17} /> Volver al catálogo
         </Link>
 
-        <div className="grid min-h-[calc(100svh-9rem)] w-full items-center gap-8 md:grid-cols-2 lg:gap-10 xl:gap-12">
+        <div className="cuadricula-detalle-producto grid min-h-[calc(100svh-9rem)] w-full items-center gap-8 md:grid-cols-2 lg:gap-10 xl:gap-12">
           <motion.div
             initial={reducirMovimiento ? false : { opacity: 0, scale: 0.97 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -152,7 +152,7 @@ function ProductoDetalle({ toggleCarrito, cart }) {
             initial={reducirMovimiento ? false : { opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: reducirMovimiento ? 0 : 0.12, ease: "easeOut" }}
-            className="mx-auto flex w-full max-w-[400px] flex-col pb-8 md:py-10 lg:py-14"
+            className="informacion-detalle-producto mx-auto flex w-full max-w-[400px] flex-col pb-8 md:py-10 lg:py-14"
           >
             <div className="flex flex-wrap items-center gap-2 text-[13px] font-bold uppercase tracking-[0.2em] text-blue-400">
               <Tag size={15} /> {producto.marca || "SportHub"}

@@ -25,7 +25,7 @@ export default function EstiloAutentificacion({ etiqueta, titulo, subtitulo, chi
         <section className="relative hidden overflow-hidden border-r border-slate-800 bg-gradient-to-br from-slate-900/80 via-slate-950 to-blue-950/30 p-12 lg:flex lg:flex-col lg:justify-between xl:p-16">
           <Link to="/" className="inline-flex w-fit items-center gap-2.5 text-xl font-black tracking-tight">
             <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-blue-700 shadow-lg shadow-blue-600/20"><Trophy size={20} /></span>
-            <span>Sport<span className="text-blue-400">Hub</span></span>
+            <span>Sport<span className="text-[#498df7]">Hub</span></span>
           </Link>
 
           <motion.div
@@ -48,7 +48,7 @@ export default function EstiloAutentificacion({ etiqueta, titulo, subtitulo, chi
           <p className="text-xs text-slate-600">© 2026 SportHub · Vive el deporte a tu manera.</p>
         </section>
 
-        <section className="flex min-h-screen items-center justify-center px-4 py-10 sm:px-8 lg:px-12">
+        <section className="seccion-formulario-autenticacion flex min-h-screen items-center justify-center px-4 py-10 sm:px-8 lg:px-12">
           <motion.div
             initial={reducirMovimiento ? false : { opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
@@ -56,7 +56,7 @@ export default function EstiloAutentificacion({ etiqueta, titulo, subtitulo, chi
             className="w-full max-w-md"
           >
             <div className="mb-8 flex items-center justify-between lg:hidden">
-              <Link to="/" className="flex items-center gap-2 text-lg font-black"><Trophy size={20} className="text-blue-400" /> Sport<span className="-ml-2 text-blue-400">Hub</span></Link>
+              <Link to="/" className="flex items-center gap-2 text-lg font-black"><Trophy size={20} className="text-[#498df7]" /> Sport<span className="-ml-2 text-[#498df7]">Hub</span></Link>
               <Link to="/" className="flex items-center gap-2 text-sm text-slate-400 transition hover:text-white"><ArrowLeft size={16} /> Inicio</Link>
             </div>
 

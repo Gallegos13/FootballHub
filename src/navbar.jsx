@@ -40,7 +40,7 @@ function Navbar({ cartCount }) {
           className="flex items-center gap-2.5 text-xl font-black tracking-tight text-white"
         >
           <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-blue-700 shadow-lg shadow-blue-600/20"><Trophy size={19} /></span>
-          <span>Sport<span className="text-blue-400">Hub</span></span>
+          <span>Sport<span className="text-[#4f7cff]">Hub</span></span>
         </Link>
 
         <ul className="hidden md:flex justify-center gap-8 text-slate-300 font-medium">
