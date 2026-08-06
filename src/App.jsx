@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Toaster, toast } from 'sonner'
 import './App.css'
 import Navbar from './navbar'
@@ -11,9 +11,83 @@ import Iniciosesión from './iniciodesesión'
 import Registro from './registro'
 import MisCompras from './miscompras'
 import Pago from './pago'
+import { Search, X, Mail, ArrowRight, ChevronDown, Check } from 'lucide-react'
+
+function FilterSelect({ value, onChange, placeholder, options, className = '' }) {
+  const [abierto, setAbierto] = useState(false)
+  const contenedorRef = useRef(null)
+
+  useEffect(() => {
+    const cerrar = (event) => {
+      if (contenedorRef.current && !contenedorRef.current.contains(event.target)) {
+        setAbierto(false)
+      }
+    }
+    document.addEventListener('mousedown', cerrar)
+    return () => document.removeEventListener('mousedown', cerrar)
+  }, [])
+
+  return (
+    <div ref={contenedorRef} className={`relative min-w-32 ${className}`}>
+      <button
+        type="button"
+        aria-haspopup="listbox"
+        aria-expanded={abierto}
+        onClick={() => setAbierto(!abierto)}
+        className={`flex w-full items-center justify-between gap-3 rounded-xl border bg-slate-900/60 px-3 py-3 text-left text-sm outline-none transition ${
+          abierto ? 'border-blue-500 text-white ring-2 ring-blue-500/10' : 'border-slate-800 text-slate-300 hover:border-slate-700'
+        }`}
+      >
+        <span className="truncate">{value || placeholder}</span>
+        <ChevronDown size={15} className={`shrink-0 text-slate-500 transition-transform ${abierto ? 'rotate-180' : ''}`} />
+      </button>
+
+      {abierto && (
+        <div role="listbox" className="absolute right-0 z-30 mt-2 max-h-60 min-w-full overflow-auto rounded-xl border border-slate-800 bg-slate-900 p-1.5 shadow-2xl shadow-black/40">
+          <button
+            type="button"
+            role="option"
+            aria-selected={value === ''}
+            onClick={() => { onChange(''); setAbierto(false) }}
+            className="flex w-full items-center justify-between gap-3 rounded-lg px-3 py-2 text-left text-sm text-slate-400 transition hover:bg-indigo-800 hover:text-white"
+          >
+            {placeholder}
+            {value === '' && <Check size={14} className="text-indigo-300" />}
+          </button>
+          {options.map((option) => (
+            <button
+              type="button"
+              role="option"
+              aria-selected={value === option}
+              key={option}
+              onClick={() => { onChange(option); setAbierto(false) }}
+              className={`flex w-full items-center justify-between gap-3 whitespace-nowrap rounded-lg px-3 py-2 text-left text-sm transition ${value === option ? 'bg-indigo-700 text-white' : 'text-slate-300 hover:bg-indigo-800 hover:text-white'}`}
+            >
+              {option}
+              {value === option && <Check size={14} className="text-indigo-300" />}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
 function App() {
   const [productos, setProductos] = useState([])
-  const [cart, setCart] = useState([])
+  const [cart, setCart] = useState(() => {
+    try {
+      const guardado = JSON.parse(localStorage.getItem('sporthub-carrito') || '[]')
+      return Array.isArray(guardado)
+        ? guardado.map((item, index) => ({
+            ...item,
+            cantidad: Math.max(1, Number(item.cantidad) || 1),
+            agregadoEn: item.agregadoEn || Date.now() + index
+          }))
+        : []
+    } catch {
+      return []
+    }
+  })
   const [correo, setCorreo] = useState("")
   const [suscrito, setSuscrito] = useState(false)
   const [cargando, setCargando] = useState(true)
@@ -36,36 +110,72 @@ const [marca, setMarca] = useState("")
       })
       .finally(() => setCargando(false))
   }, [])
+
+  useEffect(() => {
+    localStorage.setItem('sporthub-carrito', JSON.stringify(cart))
+  }, [cart])
 const categorias = [...new Set(productos.map(p => p.categoria).filter(Boolean))]
 const deportes = [...new Set(productos.map(p => p.deporte).filter(Boolean))]
 const marcas = [...new Set(productos.map(p => p.marca).filter(Boolean))]
+  const hayFiltros = Boolean(busqueda || categoria || deporte || marca)
   const toggleCarrito = (product) => {
-    const enCarrito = cart.filter(item => item.id === product.id).length
-    if (product.stock && enCarrito >= product.stock) {
+    const enCarrito = cart
+      .filter(item => item.id === product.id)
+      .reduce((total, item) => total + item.cantidad, 0)
+    if (product.stock !== undefined && enCarrito >= product.stock) {
       toast.error(`No hay más stock disponible. Solo hay ${product.stock} unidades.`)
       return
     }
-    setCart([
-      ...cart,
-      {
-        ...product,
-        tallaSeleccionada: product.tallaSeleccionada || ""
-      }
-    ])
+    const tallaSeleccionada = product.tallaSeleccionada || ""
+    const existente = cart.findIndex(item => item.id === product.id && item.tallaSeleccionada === tallaSeleccionada)
+    if (existente >= 0) {
+      setCart(cart.map((item, index) => index === existente ? { ...item, cantidad: item.cantidad + 1 } : item))
+      return
+    }
+    setCart([...cart, { ...product, tallaSeleccionada, cantidad: 1, agregadoEn: Date.now() }])
   }
 
   const quitarDelCarrito = (index) => {
     setCart(cart.filter((_, i) => i !== index))
   }
 
+  const restaurarAlCarrito = (item, index) => {
+    setCart(actual => {
+      const copia = [...actual]
+      copia.splice(Math.min(index, copia.length), 0, item)
+      return copia
+    })
+  }
+
+  const cambiarCantidad = (index, nuevaCantidad) => {
+    const item = cart[index]
+    if (!item || nuevaCantidad < 1) return
+    const otrasUnidades = cart
+      .filter((otro, i) => i !== index && otro.id === item.id)
+      .reduce((total, otro) => total + otro.cantidad, 0)
+    if (item.stock !== undefined && otrasUnidades + nuevaCantidad > item.stock) {
+      toast.error(`Solo hay ${item.stock} unidades disponibles.`)
+      return
+    }
+    setCart(cart.map((actual, i) => i === index ? { ...actual, cantidad: nuevaCantidad } : actual))
+  }
+
   const cambiarTalla = (index, talla) => {
-    setCart(
-      cart.map((item, i) =>
-        i === index
-          ? { ...item, tallaSeleccionada: talla }
-          : item
-      )
-    )
+    const item = cart[index]
+    if (!item) return
+    const repetido = cart.findIndex((otro, i) => i !== index && otro.id === item.id && otro.tallaSeleccionada === talla)
+    if (repetido >= 0) {
+      const cantidadCombinada = cart[repetido].cantidad + item.cantidad
+      if (item.stock !== undefined && cantidadCombinada > item.stock) {
+        toast.error(`Solo hay ${item.stock} unidades disponibles.`)
+        return
+      }
+      setCart(cart
+        .filter((_, i) => i !== index)
+        .map((actual) => actual === cart[repetido] ? { ...actual, cantidad: cantidadCombinada } : actual))
+      return
+    }
+    setCart(cart.map((actual, i) => i === index ? { ...actual, tallaSeleccionada: talla } : actual))
   }
 
   const vaciarCarrito = () => {
@@ -87,97 +197,97 @@ const productosFiltrados = productos.filter(producto => {
     (marca === "" || producto.marca === marca)
   )
 })
+  const unidadesCarrito = cart.reduce((total, item) => total + item.cantidad, 0)
   return (
     <>
     <Toaster richColors position="top-center" />
     <Routes>
       <Route path="/iniciodesesión" element={<Iniciosesión />} />
       <Route path="/Registro" element={<Registro/>} />
-      <Route path="/mis-compras" element={<><Navbar cartCount={cart.length} /><MisCompras /></>} />
-      <Route path="/pago" element={<><Navbar cartCount={cart.length} /><Pago cart={cart} vaciarCarrito={vaciarCarrito} /></>} />
+      <Route path="/mis-compras" element={<><Navbar cartCount={unidadesCarrito} /><MisCompras /></>} />
+      <Route path="/pago" element={<><Navbar cartCount={unidadesCarrito} /><Pago cart={cart} vaciarCarrito={vaciarCarrito} /></>} />
       <Route
         path='/'
         element={
           <>
-            <Navbar cartCount={cart.length} />
-            <div className="min-h-screen bg-slate-900 text-white flex flex-col">
-              <main className="relative overflow-hidden pt-24">
+            <Navbar cartCount={unidadesCarrito} />
+            <div className="min-h-screen bg-slate-950 text-white flex flex-col">
+              <main className="relative flex-1 overflow-hidden pt-24 pb-20">
 
     <div className="absolute -top-40 -left-40 w-[500px] h-[500px] rounded-full bg-green-500/10 blur-3xl"></div>
 
     <div className="absolute top-96 right-0 w-[500px] h-[500px] rounded-full bg-blue-500/10 blur-3xl pointer-events-none"></div>
 
-    <div className="relative max-w-7xl mx-auto px-6">
+    <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <Portada />
-                <h2 className="text-4xl font-extrabold mb-8">
-                  Productos destacados
-                </h2> 
-                </div>
-<div className="mb-10 space-y-5">
+                <section id="catalogo" className="scroll-mt-28 pt-16">
+                  <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+                    <div>
+                      <span className="text-sm font-bold uppercase tracking-[0.22em] text-blue-400">Nuestro catálogo</span>
+                      <h2 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Productos destacados</h2>
+                    </div>
+                    {!cargando && !errorCatalogo && (
+                      <p className="text-sm text-slate-400">{productosFiltrados.length} producto{productosFiltrados.length !== 1 ? 's' : ''}</p>
+                    )}
+                  </div>
 
-  <div className="relative mb-4">
+<div className="mb-10">
+
+  <div className="flex flex-col gap-3 lg:flex-row">
+  <div className="relative flex-1">
+    <Search className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
     <input
       type="text"
       placeholder="Buscar productos..."
       value={busqueda}
       onChange={(e)=>setBusqueda(e.target.value)}
-      className="w-full rounded-xl bg-slate-900 border border-slate-700 px-5 py-3 text-white placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none transition"
+      className="w-full rounded-xl border border-slate-800 bg-slate-900/60 py-3 pl-11 pr-4 text-sm text-white placeholder-slate-500 outline-none transition focus:border-blue-500/70 focus:bg-slate-900"
     />
   </div>
 
-  <div className="flex flex-wrap justify-end items-center gap-3">
+    <div className="grid flex-1 grid-cols-2 gap-2 sm:grid-cols-3 lg:flex-none">
 
-    <select
+    <FilterSelect
       value={categoria}
-      onChange={(e)=>setCategoria(e.target.value)}
-      className="rounded-xl bg-slate-900 border border-slate-700 px-4 py-3 text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none"
-    >
-      <option value="">Categoría</option>
-      {categorias.map(cat=>(
-        <option key={cat}>{cat}</option>
-      ))}
-    </select>
+      onChange={setCategoria}
+      placeholder="Categoría"
+      options={categorias}
+    />
 
-    <select
+    <FilterSelect
       value={deporte}
-      onChange={(e)=>setDeporte(e.target.value)}
-      className="rounded-xl bg-slate-900 border border-slate-700 px-4 py-3 text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none"
-    >
-      <option value="">Deporte</option>
-      {deportes.map(dep=>(
-        <option key={dep}>{dep}</option>
-      ))}
-    </select>
+      onChange={setDeporte}
+      placeholder="Deporte"
+      options={deportes}
+    />
 
-    <select
+    <FilterSelect
       value={marca}
-      onChange={(e)=>setMarca(e.target.value)}
-      className="rounded-xl bg-slate-900 border border-slate-700 px-4 py-3 text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none"
-    >
-      <option value="">Marca</option>
-      {marcas.map(mar=>(
-        <option key={mar}>{mar}</option>
-      ))}
-    </select>
+      onChange={setMarca}
+      placeholder="Marca"
+      options={marcas}
+      className="col-span-2 sm:col-span-1"
+    />
 
-    <button
+    </div>
+
+  </div>
+
+    {hayFiltros && <button
       onClick={()=>{
-        console.log("Limpiar");
         setBusqueda("")
         setCategoria("")
         setDeporte("")
         setMarca("")
       }}
-     className="text-slate-400 hover:text-white transition"
+     className="ml-auto mt-2 flex items-center justify-center gap-1 rounded-lg px-2 py-1 text-xs font-medium text-slate-500 transition hover:text-white"
     >
-      Limpiar
-    </button>
-
-  </div>
+      <X size={16} /> Limpiar
+    </button>}
 
 </div>
-               <div className="mx-auto max-w-6xl">
-  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+               <div>
+  <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
 
                   {cargando ? (
       <p className="col-span-full text-center text-slate-400 text-lg py-10">
@@ -204,33 +314,36 @@ const productosFiltrados = productos.filter(producto => {
 
   </div>
                 </div>
+                </section>
+                </div>
               </main>
 
-              <footer className="bg-slate-800 border-t border-slate-700 mt-10 py-4">
-                <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-3">
-                  <div>
-                    <h3 className="font-bold text-lg">
+              <footer className="border-t border-slate-800 bg-slate-950 py-5">
+                <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 sm:px-6 md:flex-row md:items-center md:justify-between lg:px-8">
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-blue-500/10 text-blue-400"><Mail size={18} /></div>
+                    <div><h3 className="text-sm font-bold">
                       Promociones Exclusivas
                     </h3>
-                    <p className="text-slate-400 text-sm">
+                    <p className="text-xs text-slate-500">
                       Recibe ofertas y novedades semanales.
-                    </p>
+                    </p></div>
                   </div>
 
                   {!suscrito ? (
-                    <div className="flex gap-2 w-full md:w-auto">
+                    <div className="flex w-full flex-col gap-2 sm:flex-row md:w-auto">
                       <input
                         type="email"
                         value={correo}
                         onChange={(e) => setCorreo(e.target.value)}
                         placeholder="Tu correo"
-                        className="px-3 py-2 rounded-lg text-white"
+                        className="min-w-56 rounded-lg border border-slate-800 bg-slate-900 px-3 py-2 text-sm text-white outline-none transition placeholder:text-slate-500 focus:border-blue-500"
                       />
                       <button
                         onClick={suscribirse}
-                        className="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg"
+                        className="flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold transition hover:bg-blue-500"
                       >
-                        Suscribirme
+                        Suscribirme <ArrowRight size={17} />
                       </button>
                     </div>
                   ) : (
@@ -248,8 +361,8 @@ const productosFiltrados = productos.filter(producto => {
         path="/carrito"
         element={
           <>
-            <Navbar cartCount={cart.length} />
-            <Carrito cart={cart} vaciarCarrito={vaciarCarrito} quitarDelCarrito={quitarDelCarrito} cambiarTalla={cambiarTalla} />
+            <Navbar cartCount={unidadesCarrito} />
+            <Carrito cart={cart} vaciarCarrito={vaciarCarrito} quitarDelCarrito={quitarDelCarrito} restaurarAlCarrito={restaurarAlCarrito} cambiarCantidad={cambiarCantidad} cambiarTalla={cambiarTalla} />
           </>
           
         }
@@ -258,7 +371,7 @@ const productosFiltrados = productos.filter(producto => {
       path="/producto/:id"
       element={
         <>
-          <Navbar cartCount={cart.length} />
+          <Navbar cartCount={unidadesCarrito} />
           <ProductoDetalle toggleCarrito={toggleCarrito} cart={cart} />
         </>
       } />

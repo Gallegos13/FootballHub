@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { ShoppingCart, House, Tag, Menu, X, User, ChevronDown, LogOut, ClipboardList } from "lucide-react";
+import { ShoppingCart, House, Tag, Menu, X, User, ChevronDown, LogOut, ClipboardList, Trophy } from "lucide-react";
 import { motion } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
 import { useAuth } from "./autentificación.jsx";
@@ -32,14 +32,15 @@ function Navbar({ cartCount }) {
       initial={{ y: -70, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="fixed top-0 left-0 w-full z-50 border-b border-slate-700/50 bg-slate-950/80 backdrop-blur-lg"
+      className="fixed top-0 left-0 z-50 w-full border-b border-slate-800/80 bg-slate-950/85 shadow-lg shadow-black/5 backdrop-blur-xl"
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between md:grid md:grid-cols-3 px-6 py-4">
         <Link
           to="/"
-          className="flex items-center gap-2 text-white text-2xl font-bold"
+          className="flex items-center gap-2.5 text-xl font-black tracking-tight text-white"
         >
-          <span>SportHub</span>
+          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-blue-700 shadow-lg shadow-blue-600/20"><Trophy size={19} /></span>
+          <span>Sport<span className="text-blue-400">Hub</span></span>
         </Link>
 
         <ul className="hidden md:flex justify-center gap-8 text-slate-300 font-medium">
@@ -70,10 +71,10 @@ function Navbar({ cartCount }) {
           </li>
 
           <li>
-            <button className="flex items-center gap-2 hover:text-blue-400 transition">
+            <a href="/#catalogo" className="flex items-center gap-2 hover:text-blue-400 transition">
               <Tag size={18} />
               Ofertas
-            </button>
+            </a>
           </li>
         </ul>
 
@@ -124,7 +125,7 @@ function Navbar({ cartCount }) {
           ) : (
             <Link
               to="/iniciodesesión"
-              className="rounded-xl bg-blue-600 px-5 py-2 font-semibold text-white transition hover:bg-blue-500"
+              className="rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-blue-600/15 transition hover:bg-blue-500"
             >
               Iniciar sesión
             </Link>
@@ -168,10 +169,10 @@ function Navbar({ cartCount }) {
               </Link>
             </li>
             <li>
-              <button className="flex items-center gap-2 hover:text-blue-400 transition">
+              <a href="/#catalogo" className="flex items-center gap-2 hover:text-blue-400 transition" onClick={() => setMenuAbierto(false)}>
                 <Tag size={18} />
                 Ofertas
-              </button>
+              </a>
             </li>
             {user ? (
               <>

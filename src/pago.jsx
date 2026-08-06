@@ -15,13 +15,14 @@ function Pago({ cart, vaciarCarrito }) {
 
   if (!user || cart.length === 0) return null;
 
-  const total = cart.reduce((sum, item) => sum + Number(item.precio), 0);
-  const productName = `${cart.length} artículo${cart.length !== 1 ? "s" : ""}`;
+  const unidades = cart.reduce((sum, item) => sum + item.cantidad, 0);
+  const total = cart.reduce((sum, item) => sum + Number(item.precio) * item.cantidad, 0);
+  const productName = `${unidades} artículo${unidades !== 1 ? "s" : ""}`;
 
   const contarItems = () => {
     const mapa = {};
     cart.forEach((item) => {
-      mapa[item.id] = (mapa[item.id] || 0) + 1;
+      mapa[item.id] = (mapa[item.id] || 0) + item.cantidad;
     });
     return Object.entries(mapa).map(([id, cantidad]) => ({ id: Number(id), cantidad }));
   };
@@ -47,6 +48,7 @@ function Pago({ cart, vaciarCarrito }) {
       articulos: cart.map((item) => ({
         nombre: item.nombre,
         precio: item.precio,
+        cantidad: item.cantidad,
         talla: item.tallaSeleccionada,
         imagen: item.imagen,
       })),
@@ -83,7 +85,7 @@ function Pago({ cart, vaciarCarrito }) {
             <div className="flex flex-wrap gap-1.5 sm:gap-2 mt-1.5">
               {cart.slice(0, 3).map((item, i) => (
                 <span key={i} className="rounded-full bg-slate-800 px-2.5 sm:px-3 py-0.5 text-xs text-slate-400 truncate max-w-32">
-                  {item.nombre}
+                  {item.nombre} ×{item.cantidad}
                 </span>
               ))}
               {cart.length > 3 && (

@@ -75,9 +75,12 @@ function MisCompras() {
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="font-semibold text-sm sm:text-base truncate">{art.nombre}</p>
-                        {art.talla && <p className="text-xs text-slate-400 mt-0.5">Talla: {art.talla}</p>}
+                        <p className="text-xs text-slate-400 mt-0.5">
+                          {art.talla && <>Talla: {art.talla} · </>}
+                          Cantidad: {art.cantidad || 1}
+                        </p>
                       </div>
-                      <p className="text-lg sm:text-xl font-black text-emerald-400 whitespace-nowrap">${Number(art.precio).toFixed(2)}</p>
+                      <p className="text-lg sm:text-xl font-black text-emerald-400 whitespace-nowrap">${(Number(art.precio) * (art.cantidad || 1)).toFixed(2)}</p>
                     </div>
                   ))}
                 </div>
