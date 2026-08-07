@@ -16,6 +16,14 @@ button:focus-visible, a:focus-visible, select:focus-visible, input:focus-visible
 }
 ::selection { background: rgba(59, 130, 246, .35); }
 
+@media (max-width: 1023px) and (max-height: 740px) {
+  .seccion-formulario-autenticacion {
+    align-items: flex-start;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+}
+
 @media (min-width: 768px) and (max-height: 820px) {
   .cuadricula-detalle-producto {
     align-items: start;

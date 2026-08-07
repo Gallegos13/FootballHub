@@ -1,9 +1,9 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useLayoutEffect, useRef } from 'react'
 import { Toaster, toast } from 'sonner'
 import './App.css'
 import Navbar from './navbar'
 import Tarjeta from './tarjeta'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, useLocation } from 'react-router-dom'
 import Carrito from './carrito'
 import ProductoDetalle from './detalleproducto'
 import Portada from './Portada'
@@ -12,6 +12,25 @@ import Registro from './registro'
 import MisCompras from './miscompras'
 import Pago from './pago'
 import { Search, X, Mail, ArrowRight, ChevronDown, Check } from 'lucide-react'
+
+function RestaurarDesplazamiento() {
+  const { pathname, hash } = useLocation()
+
+  useLayoutEffect(() => {
+    if (!hash) {
+      window.scrollTo(0, 0)
+      return
+    }
+
+    const frame = requestAnimationFrame(() => {
+      document.getElementById(decodeURIComponent(hash.slice(1)))?.scrollIntoView()
+    })
+
+    return () => cancelAnimationFrame(frame)
+  }, [pathname, hash])
+
+  return null
+}
 
 function FilterSelect({ value, onChange, placeholder, options, className = '' }) {
   const [abierto, setAbierto] = useState(false)
@@ -200,6 +219,7 @@ const productosFiltrados = productos.filter(producto => {
   const unidadesCarrito = cart.reduce((total, item) => total + item.cantidad, 0)
   return (
     <>
+    <RestaurarDesplazamiento />
     <Toaster richColors position="top-center" />
     <Routes>
       <Route path="/iniciodesesión" element={<Iniciosesión />} />
