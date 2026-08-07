@@ -4,6 +4,9 @@ import { useNavigate} from "react-router-dom";
 
 function Tarjeta({ product, cart, toggleCarrito }) {
   const navigate = useNavigate();
+  const ajusteImagen = product.id === 2
+    ? "scale-[0.92] group-hover:scale-[1.01]"
+    : "group-hover:scale-110";
   const enCarrito = cart
     ? cart.filter(item => item.id === product.id).reduce((total, item) => total + item.cantidad, 0)
     : 0
@@ -53,13 +56,13 @@ function Tarjeta({ product, cart, toggleCarrito }) {
         <img
           src={product.imagen}
           alt={product.nombre}
-          className="
+          className={`
             h-52
             object-contain
             transition-transform
             duration-500
-            group-hover:scale-110
-          "
+            ${ajusteImagen}
+          `}
         />
       </div>
 

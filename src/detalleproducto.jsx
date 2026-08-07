@@ -2,6 +2,7 @@ import { Link, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { AlertCircle, ArrowLeft, Check, Heart, Package, ShieldCheck, ShoppingCart, Tag, Truck, X, ZoomIn } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
+import { obtenerImagenProducto } from "./imagenproducto.js";
 
 function ProductoDetalle({ toggleCarrito, cart }) {
   const { id } = useParams();
@@ -20,7 +21,10 @@ function ProductoDetalle({ toggleCarrito, cart }) {
         if (!res.ok) throw new Error('Producto no encontrado')
         return res.json()
       })
-      .then(data => setProducto(data))
+      .then(data => setProducto({
+        ...data,
+        imagen: obtenerImagenProducto(data),
+      }))
       .catch(err => {
         console.error('Error al obtener producto:', err)
         setErrorDetalle('No se pudo cargar el producto. Intenta de nuevo más tarde.')

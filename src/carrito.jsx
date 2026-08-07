@@ -4,6 +4,7 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "./autentificación.jsx";
+import { obtenerImagenProducto } from "./imagenproducto.js";
 
 function Carrito({ cart, vaciarCarrito, quitarDelCarrito, restaurarAlCarrito, cambiarCantidad, cambiarTalla }) {
   const { user } = useAuth();
@@ -71,7 +72,7 @@ function Carrito({ cart, vaciarCarrito, quitarDelCarrito, restaurarAlCarrito, ca
                   >
                     <div className="flex flex-col gap-5 sm:flex-row">
                       <div className="flex h-44 w-full shrink-0 items-center justify-center rounded-2xl bg-slate-950/80 p-4 sm:h-40 sm:w-40">
-                        <img src={item.imagen} alt={item.nombre} className="h-full w-full object-contain" />
+                        <img src={obtenerImagenProducto(item)} alt={item.nombre} className="h-full w-full object-contain" />
                       </div>
 
                       <div className="min-w-0 flex-1">

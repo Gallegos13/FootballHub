@@ -11,6 +11,7 @@ import Iniciosesión from './iniciodesesión'
 import Registro from './registro'
 import MisCompras from './miscompras'
 import Pago from './pago'
+import { obtenerImagenProducto } from './imagenproducto.js'
 import { Search, X, Mail, ArrowRight, ChevronDown, Check } from 'lucide-react'
 
 function RestaurarDesplazamiento() {
@@ -122,7 +123,10 @@ const [marca, setMarca] = useState("")
         if (!res.ok) throw new Error('Error al cargar productos')
         return res.json()
       })
-      .then(data => setProductos(data))
+      .then(data => setProductos(data.map((producto) => ({
+        ...producto,
+        imagen: obtenerImagenProducto(producto),
+      }))))
       .catch(err => {
         console.error('Error al obtener productos:', err)
         setErrorCatalogo('No se pudieron cargar los productos. Intenta de nuevo más tarde.')
